@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Břitva — Barbershop Praha 3</title>
+  <meta name="description" content="Břitva — pánské střihy, úprava vousů a holení břitvou na Žižkově. Online rezervace.">
+  <meta name="theme-color" content="#15302A">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315302A'/%3E%3Ctext x='50%25' y='58%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial Narrow,Arial,sans-serif' font-weight='700' font-size='40' fill='%23C59A4B'%3EB%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Oswald:wght@500;700&family=Figtree:wght@400;500;600&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ===== Кольори: пляшково-зелений, латунь і кольори барбер-полу ===== */
+    :root {
+      --green: #15302A;
+      --green-2: #1C3B34;
+      --green-3: #244A41;
+      --bone: #ECE6DA;
+      --muted: #A2B3AC;
+      --brass: #C59A4B;
+      --brass-2: #D9B26A;
+      --pole-red: #B4232C;
+      --pole-blue: #1F3E8A;
+      --line: rgba(236,230,218,.14);
+      --wrap: 1140px;
+      --header-bg: rgba(21,48,42,.92);
+      --sum-muted: #5C6E67;
+      --sum-line: rgba(21,48,42,.25);
+      --sum-text: #3E524B;
+      --on-brass: #15302A;
+    }
+    /* Світла тема: ті ж кольори, але навпаки — світлий фон, зелений текст */
+    [data-theme="light"] {
+      --green: #EFEBE3;
+      --green-2: #E6E0D5;
+      --green-3: #D8D0C1;
+      --bone: #15302A;
+      --muted: #56685F;
+      --brass: #8E6A2B;
+      --brass-2: #75561F;
+      --line: rgba(21,48,42,.16);
+      --header-bg: rgba(239,235,227,.92);
+      --sum-muted: #A9BAB3;
+      --sum-line: rgba(236,230,218,.25);
+      --sum-text: #C9D3CE;
+      --on-brass: #FFFFFF;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Figtree', 'Onest', system-ui, sans-serif; font-size: 17px; line-height: 1.6; background: var(--green); color: var(--bone); }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    [hidden] { display: none !important; }
+    :focus-visible { outline: 2px solid var(--brass-2); outline-offset: 3px; border-radius: 4px; }
+    .wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
+    h1, h2, h3, .display { font-family: 'Big Shoulders Display', 'Oswald', 'Arial Narrow', sans-serif; font-weight: 800; line-height: .95; letter-spacing: .01em; }
+    h2 { font-size: clamp(44px, 7vw, 76px); text-transform: uppercase; margin-bottom: 14px; }
+    .lead { color: var(--muted); max-width: 52ch; }
+    .block { padding: 110px 0; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 15px 28px; border-radius: 999px; border: 0; font-weight: 600; text-decoration: none; transition: background .15s, color .15s; }
+    .btn-brass { background: var(--brass); color: var(--on-brass); }
+    .btn-brass:hover { background: var(--brass-2); }
+    .btn-ghost { border: 1.5px solid var(--line); background: transparent; }
+    .btn-ghost:hover { border-color: var(--brass); color: var(--brass-2); }
+
+    /* ===== Шапка ===== */
+    header { position: sticky; top: 0; z-index: 40; background: var(--header-bg); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+    .nav { height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .logo { font-family: 'Big Shoulders Display', 'Oswald', sans-serif; font-weight: 800; font-size: 30px; text-decoration: none; letter-spacing: .02em; }
+    .logo small { font-family: 'Figtree', 'Onest', sans-serif; font-weight: 500; font-size: 12px; color: var(--brass); margin-left: 8px; letter-spacing: .04em; }
+    .menu { display: flex; gap: 28px; list-style: none; }
+    .menu a { text-decoration: none; color: var(--muted); font-weight: 500; }
+    .menu a:hover { color: var(--bone); }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .langs { display: flex; gap: 2px; font-size: 14px; }
+    .langs button { background: none; border: 0; padding: 6px 8px; color: var(--muted); font-weight: 600; }
+    .langs button.active { color: var(--brass-2); }
+    .nav .btn { padding: 10px 20px; font-size: 15px; }
+
+    /* ===== Головний екран ===== */
+    .hero { padding: 80px 0 100px; }
+    .hero-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: center; }
+    .hero h1 { font-size: clamp(64px, 11vw, 148px); text-transform: uppercase; margin-bottom: 26px; }
+    .hero h1 span { display: block; }
+    .hero h1 span:nth-child(2) { color: var(--brass); }
+    .hero p { font-size: 19px; color: var(--muted); max-width: 42ch; margin-bottom: 34px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .today { margin-top: 30px; font-size: 15px; color: var(--muted); display: flex; align-items: center; gap: 10px; }
+    .today i { width: 9px; height: 9px; border-radius: 50%; background: #5FBF7F; }
+    .today.closed i { background: var(--pole-red); }
+
+    /* Фото в арці + барбер-пол — головна фішка */
+    .window { display: grid; grid-template-columns: 1fr 34px; gap: 18px; align-items: stretch; }
+    .arch { border-radius: 999px 999px 18px 18px; overflow: hidden; aspect-ratio: 4 / 5; background: var(--green-3); border: 6px solid var(--green-2); box-shadow: 0 0 0 1px var(--brass); }
+    .arch img { width: 100%; height: 100%; object-fit: cover; }
+    .pole { position: relative; border-radius: 18px; overflow: hidden; border: 3px solid var(--brass); }
+    .pole::before {
+      content: ''; position: absolute; inset: -60px 0;
+      background: repeating-linear-gradient(-45deg, var(--pole-red) 0 14px, #F4F1EC 14px 26px, var(--pole-blue) 26px 40px, #F4F1EC 40px 52px);
+      animation: spin 2.4s linear infinite;
+    }
+    .pole::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.35), transparent 40%, rgba(255,255,255,.25) 60%, rgba(0,0,0,.3)); }
+    @keyframes spin { to { transform: translateY(52px); } }
+
+    /* ===== Послуги (прайс як дошка в барбершопі) ===== */
+    #services { background: var(--green-2); }
+    .services-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 48px; }
+    .price-board { list-style: none; display: grid; grid-template-columns: 1fr 1fr; column-gap: 64px; }
+    .price-board li { border-bottom: 1px solid var(--line); }
+    .price-board button { width: 100%; background: none; border: 0; text-align: left; padding: 22px 0; display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; }
+    .price-board button:hover .svc-name { color: var(--brass-2); }
+    .svc-name { font-family: 'Big Shoulders Display', 'Oswald', sans-serif; font-weight: 800; font-size: 30px; text-transform: uppercase; line-height: 1; transition: color .15s; }
+    .svc-price { font-family: 'Big Shoulders Display', 'Oswald', sans-serif; font-weight: 800; font-size: 30px; color: var(--brass); line-height: 1; }
+    .svc-desc { color: var(--muted); font-size: 15px; }
+    .svc-time { color: var(--muted); font-size: 14px; text-align: right; }
+
+    /* ===== Команда ===== */
+    .team { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+    .barber { border-top: 3px solid var(--brass); padding-top: 22px; }
+    .mono { width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center; background: var(--green-3); color: var(--brass-2); font-family: 'Big Shoulders Display', 'Oswald', sans-serif; font-weight: 800; font-size: 34px; margin-bottom: 18px; }
+    .barber h3 { font-size: 34px; text-transform: uppercase; margin-bottom: 6px; }
+    .barber .role { color: var(--brass); font-weight: 600; margin-bottom: 8px; }
+    .barber p { color: var(--muted); }
+
+    /* ===== Галерея ===== */
+    #gallery { background: var(--green-2); }
+    .gallery { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 210px; gap: 14px; margin-top: 48px; }
+    .gallery figure { border-radius: 12px; overflow: hidden; background: var(--green-3); }
+    .gallery figure:nth-child(6n+1) { grid-column: span 2; grid-row: span 2; }
+    .gallery figure:nth-child(6n+4) { grid-column: span 2; }
+    .gallery figure:nth-child(6n+7) { grid-column: 3 / span 2; }
+    .gallery img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ===== Онлайн-запис ===== */
+    .booking { display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; margin-top: 48px; align-items: start; }
+    .step { margin-bottom: 34px; }
+    .step h3 { font-family: 'Figtree', 'Onest', sans-serif; font-weight: 600; font-size: 17px; letter-spacing: 0; line-height: 1.4; margin-bottom: 14px; color: var(--bone); }
+    .step h3 b { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--brass); color: var(--on-brass); font-size: 14px; margin-right: 10px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { padding: 10px 16px; border-radius: 999px; border: 1.5px solid var(--line); background: transparent; font-weight: 500; font-size: 15px; transition: border-color .15s, background .15s; }
+    .chip:hover:not(:disabled) { border-color: var(--brass); }
+    .chip.on { background: var(--brass); border-color: var(--brass); color: var(--on-brass); font-weight: 600; }
+    .chip:disabled { opacity: .32; cursor: not-allowed; text-decoration: line-through; }
+    .chip small { display: block; font-size: 12px; opacity: .8; line-height: 1.2; }
+    .day { text-align: center; min-width: 70px; border-radius: 14px; }
+    .slots-hint { color: var(--muted); font-size: 15px; }
+    .field { width: 100%; padding: 13px 16px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--green-2); color: var(--bone); font: inherit; margin-bottom: 10px; }
+    .field::placeholder { color: var(--muted); }
+    .field:focus { outline: none; border-color: var(--brass); }
+
+    .summary { position: sticky; top: 96px; background: var(--bone); color: var(--green); border-radius: 18px; padding: 30px; }
+    .summary h3 { font-size: 36px; text-transform: uppercase; margin-bottom: 18px; }
+    .sum-row { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px dashed var(--sum-line); }
+    .sum-row span:first-child { color: var(--sum-muted); }
+    .sum-row span:last-child { font-weight: 600; text-align: right; }
+    .sum-total { display: flex; justify-content: space-between; align-items: baseline; margin: 18px 0 20px; }
+    .sum-total b { font-family: 'Big Shoulders Display', 'Oswald', sans-serif; font-size: 40px; }
+    .summary .btn { width: 100%; background: var(--green); color: var(--bone); }
+    .summary .btn:hover { background: var(--green-3); }
+    .summary .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .form-msg { font-size: 14px; color: var(--pole-red); margin-top: 10px; min-height: 20px; }
+    .demo-note { font-size: 13px; color: var(--sum-muted); margin-top: 6px; }
+    .done { text-align: center; padding: 10px 0; }
+    .done .display { font-size: 48px; text-transform: uppercase; margin-bottom: 10px; }
+    .done p { color: var(--sum-text); margin-bottom: 20px; }
+
+    /* ===== Контакти ===== */
+    #contact { background: var(--green-2); }
+    .contact { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 40px; }
+    .hours { list-style: none; }
+    .hours li { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--line); }
+    .hours li.now { color: var(--brass-2); font-weight: 600; }
+    .addr p { color: var(--muted); margin-bottom: 8px; }
+    .addr .display { font-size: 40px; text-transform: uppercase; margin-bottom: 14px; color: var(--bone); }
+
+    footer { padding: 30px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    .foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+    body, header, .summary, .chip, .field { transition: background-color .3s, color .3s, border-color .3s; }
+    .theme-btn { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--line); background: transparent; display: grid; place-items: center; }
+    .theme-btn:hover { border-color: var(--brass); }
+    .theme-btn svg { width: 18px; height: 18px; }
+
+    /* ===== Галерея: перегляд фото на весь екран ===== */
+    .gallery figure { cursor: zoom-in; }
+    .gallery img { transition: transform .4s ease; }
+    .gallery figure:hover img { transform: scale(1.04); }
+    .lightbox { position: fixed; inset: 0; z-index: 100; background: rgba(8,18,15,.92); display: grid; place-items: center; padding: 24px; }
+    .lightbox img { max-width: min(1100px, 100%); max-height: 86vh; border-radius: 12px; object-fit: contain; }
+    .lb-btn { position: absolute; background: rgba(236,230,218,.12); color: #ECE6DA; border: 0; width: 48px; height: 48px; border-radius: 50%; font-size: 22px; }
+    .lb-btn:hover { background: rgba(236,230,218,.25); }
+    .lb-close { top: 20px; right: 20px; }
+    .lb-prev { left: 20px; top: 50%; transform: translateY(-50%); }
+    .lb-next { right: 20px; top: 50%; transform: translateY(-50%); }
+    .lb-count { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); color: #A2B3AC; font-size: 14px; }
+
+    /* ===== Адаптив ===== */
+    @media (max-width: 960px) {
+      .hero-grid, .booking, .contact { grid-template-columns: 1fr; }
+      .window { max-width: 460px; }
+      .price-board { grid-template-columns: 1fr; }
+      .team { grid-template-columns: 1fr; gap: 36px; }
+      .gallery { grid-template-columns: 1fr 1fr; grid-auto-rows: 170px; }
+      .gallery figure:nth-child(n) { grid-column: span 1; grid-row: span 1; }
+      .gallery figure:nth-child(3n+1) { grid-column: span 2; }
+      .summary { position: static; }
+    }
+    @media (max-width: 640px) {
+      .block { padding: 76px 0; }
+      .menu { display: none; }
+      .nav .btn { display: none; }
+      .hero { padding: 48px 0 72px; }
+      .svc-name, .svc-price { font-size: 26px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap nav">
+      <a href="#" class="logo">Břitva<small>barbershop</small></a>
+      <ul class="menu">
+        <li><a href="#services" data-i18n="nav.services">Služby</a></li>
+        <li><a href="#team" data-i18n="nav.team">Tým</a></li>
+        <li><a href="#gallery" data-i18n="nav.gallery">Galerie</a></li>
+        <li><a href="#contact" data-i18n="nav.contact">Kontakt</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="langs"><button data-lang="cs">CZ</button><button data-lang="en">EN</button><button data-lang="uk">UA</button></div>
+        <button class="theme-btn" id="themeBtn" aria-label="Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></button>
+        <a href="#book" class="btn btn-brass" data-i18n="nav.book">Rezervovat</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== ГОЛОВНИЙ ЕКРАН ===== -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <h1><span data-i18n="hero.l1">Střih.</span><span data-i18n="hero.l2">Vousy.</span><span data-i18n="hero.l3">Břitva.</span></h1>
+          <p data-i18n="hero.text">Pánský barbershop na Žižkově. Přijďte se ostříhat, upravit vousy nebo si dopřát holení horkým ručníkem a břitvou.</p>
+          <div class="hero-actions">
+            <a href="#book" class="btn btn-brass" data-i18n="hero.btn1">Rezervovat termín</a>
+            <a href="#services" class="btn btn-ghost" data-i18n="hero.btn2">Ceník</a>
+          </div>
+          <p class="today" id="today"><i></i><span></span></p>
+        </div>
+        <div class="window">
+          <div class="arch"><img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=800&h=1000&q=75" alt="Barber chair by a brick wall" onerror="this.remove()"></div>
+          <div class="pole" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ПОСЛУГИ ===== -->
+    <section class="block" id="services">
+      <div class="wrap">
+        <div class="services-head">
+          <div>
+            <h2 data-i18n="svc.title">Ceník</h2>
+            <p class="lead" data-i18n="svc.sub">Klikněte na službu a rovnou si ji zarezervujte.</p>
+          </div>
+        </div>
+        <ul class="price-board" id="priceBoard"></ul>
+      </div>
+    </section>
+
+    <!-- ===== КОМАНДА ===== -->
+    <section class="block" id="team">
+      <div class="wrap">
+        <h2 data-i18n="team.title">Kdo vás ostříhá</h2>
+        <div class="team" id="teamGrid"></div>
+      </div>
+    </section>
+
+    <!-- ===== ГАЛЕРЕЯ ===== -->
+    <section class="block" id="gallery">
+      <div class="wrap">
+        <h2 data-i18n="gal.title">Z naší židle</h2>
+        <div class="gallery" id="gallery-grid">
+          <figure><img loading="lazy" src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=900&h=900&q=75" data-full="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=max&w=1600&q=80" alt="" onerror="this.parentNode.remove()"></figure>
+          <figure><img loading="lazy" src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=900&h=900&q=75" data-full="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=max&w=1600&q=80" alt="" onerror="this.parentNode.remove()"></figure>
+          <figure><img loading="lazy" src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=900&h=900&q=75" data-full="https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=max&w=1600&q=80" alt="" onerror="this.parentNode.remove()"></figure>
+          <figure><img loading="lazy" src="https://images.unsplash.com/photo-1647140655214-e4a2d914971f?auto=format&fit=crop&w=900&h=900&q=75" data-full="https://images.unsplash.com/photo-1647140655214-e4a2d914971f?auto=format&fit=max&w=1600&q=80" alt="" onerror="this.parentNode.remove()"></figure>
+          <figure><img loading="lazy" src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?auto=format&fit=crop&w=900&h=900&q=75" data-full="https://images.unsplash.com/photo-1605497788044-5a32c7078486?auto=format&fit=max&w=1600&q=80" alt="" onerror="this.parentNode.remove()"></figure>
+          <figure><img loading="lazy" src="https://images.unsplash.com/photo-1593702275687-f8b402bf1fb5?auto=format&fit=crop&w=900&h=900&q=75" data-full="https://images.unsplash.com/photo-1593702275687-f8b402bf1fb5?auto=format&fit=max&w=1600&q=80" alt="" onerror="this.parentNode.remove()"></figure>
+          <figure><img loading="lazy" src="https://images.unsplash.com/photo-1781768526571-ef9c333279c7?auto=format&fit=crop&w=900&h=900&q=75" data-full="https://images.unsplash.com/photo-1781768526571-ef9c333279c7?auto=format&fit=max&w=1600&q=80" alt="" onerror="this.parentNode.remove()"></figure>
+          <figure><img loading="lazy" src="https://images.unsplash.com/photo-1783908688260-0c47404926f3?auto=format&fit=crop&w=900&h=900&q=75" data-full="https://images.unsplash.com/photo-1783908688260-0c47404926f3?auto=format&fit=max&w=1600&q=80" alt="" onerror="this.parentNode.remove()"></figure>
+          <figure><img loading="lazy" src="https://images.unsplash.com/photo-1630827020718-3433092696e7?auto=format&fit=crop&w=900&h=900&q=75" data-full="https://images.unsplash.com/photo-1630827020718-3433092696e7?auto=format&fit=max&w=1600&q=80" alt="" onerror="this.parentNode.remove()"></figure>
+          <figure><img loading="lazy" src="https://images.unsplash.com/photo-1773904215697-e6c21fc27ac2?auto=format&fit=crop&w=900&h=900&q=75" data-full="https://images.unsplash.com/photo-1773904215697-e6c21fc27ac2?auto=format&fit=max&w=1600&q=80" alt="" onerror="this.parentNode.remove()"></figure>
+          <figure><img loading="lazy" src="https://images.unsplash.com/photo-1788328155052-e02abe9ba983?auto=format&fit=crop&w=900&h=900&q=75" data-full="https://images.unsplash.com/photo-1788328155052-e02abe9ba983?auto=format&fit=max&w=1600&q=80" alt="" onerror="this.parentNode.remove()"></figure>
+          <figure><img loading="lazy" src="https://images.unsplash.com/photo-1759134198561-e2041049419c?auto=format&fit=crop&w=900&h=900&q=75" data-full="https://images.unsplash.com/photo-1759134198561-e2041049419c?auto=format&fit=max&w=1600&q=80" alt="" onerror="this.parentNode.remove()"></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ОНЛАЙН-ЗАПИС ===== -->
+    <section class="block" id="book">
+      <div class="wrap">
+        <h2 data-i18n="book.title">Rezervace</h2>
+        <p class="lead" data-i18n="book.sub">Vyberte službu, barbera a čas. Zabere to minutu.</p>
+        <div class="booking">
+          <div id="steps">
+            <div class="step"><h3><b>1</b><span data-i18n="book.s1">Služba</span></h3><div class="chips" id="pickService"></div></div>
+            <div class="step"><h3><b>2</b><span data-i18n="book.s2">Barber</span></h3><div class="chips" id="pickBarber"></div></div>
+            <div class="step"><h3><b>3</b><span data-i18n="book.s3">Den</span></h3><div class="chips" id="pickDay"></div></div>
+            <div class="step"><h3><b>4</b><span data-i18n="book.s4">Čas</span></h3><div class="chips" id="pickTime"></div></div>
+            <div class="step"><h3><b>5</b><span data-i18n="book.s5">Vaše kontakty</span></h3>
+              <input class="field" id="fName" autocomplete="name" data-ph="ph.name">
+              <input class="field" id="fPhone" type="tel" autocomplete="tel" data-ph="ph.phone">
+            </div>
+          </div>
+          <aside class="summary" id="summary" aria-live="polite"></aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== КОНТАКТИ ===== -->
+    <section class="block" id="contact">
+      <div class="wrap">
+        <h2 data-i18n="ct.title">Kde nás najdete</h2>
+        <div class="contact">
+          <div class="addr">
+            <div class="display">Seifertova 00</div>
+            <p data-i18n="ct.addr">Praha 3 – Žižkov, 2 minuty od zastávky Lipanská.</p>
+            <p>+420 000 000 000</p>
+          </div>
+          <ul class="hours" id="hours"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <span>© Břitva — <span data-i18n="foot.demo">demo projekt, fotky: Unsplash</span></span>
+      <span data-i18n="foot.made">Web: Jazzhe</span>
+    </div>
+  </footer>
+
+  <!-- Перегляд фото -->
+  <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true">
+    <img id="lbImg" alt="">
+    <button class="lb-btn lb-close" id="lbClose" aria-label="Close">×</button>
+    <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous">←</button>
+    <button class="lb-btn lb-next" id="lbNext" aria-label="Next">→</button>
+    <span class="lb-count" id="lbCount"></span>
+  </div>
+
+  <script>
+    // ===== ДАНІ (послуги, барбери, години роботи) =====
+    const SERVICES = [
+      { id: 'cut',   price: 450, min: 45, name: { cs: 'Střih', en: 'Haircut', uk: 'Стрижка' }, desc: { cs: 'Střih nůžkami nebo strojkem, mytí a styling.', en: 'Scissors or clippers, wash and styling.', uk: 'Ножицями або машинкою, миття й укладка.' } },
+      { id: 'combo', price: 690, min: 75, name: { cs: 'Střih + vousy', en: 'Haircut + beard', uk: 'Стрижка + борода' }, desc: { cs: 'Kompletní péče — nejoblíbenější.', en: 'The full treatment, our most popular.', uk: 'Повний догляд — найпопулярніше.' } },
+      { id: 'beard', price: 350, min: 30, name: { cs: 'Úprava vousů', en: 'Beard trim', uk: 'Оформлення бороди' }, desc: { cs: 'Tvarování, konturování a olej na vousy.', en: 'Shaping, line-up and beard oil.', uk: 'Форма, контур і олія для бороди.' } },
+      { id: 'shave', price: 490, min: 45, name: { cs: 'Holení břitvou', en: 'Straight-razor shave', uk: 'Гоління бритвою' }, desc: { cs: 'Horký ručník, pěna a klasická břitva.', en: 'Hot towel, lather and a classic razor.', uk: 'Гарячий рушник, піна й класична бритва.' } },
+      { id: 'fade',  price: 520, min: 50, name: { cs: 'Skin fade', en: 'Skin fade', uk: 'Скін фейд' }, desc: { cs: 'Přechod až do kůže, precizní práce.', en: 'Fade down to the skin, precise work.', uk: 'Перехід до шкіри, ювелірна робота.' } },
+      { id: 'kid',   price: 300, min: 30, name: { cs: 'Dětský střih', en: 'Kids haircut', uk: 'Дитяча стрижка' }, desc: { cs: 'Pro kluky do 12 let.', en: 'For boys up to 12 years old.', uk: 'Для хлопців до 12 років.' } }
+    ];
+    const BARBERS = [
+      { id: 'tom',  ini: 'T', name: 'Tomáš', role: { cs: 'Fade a krátké střihy', en: 'Fades and short cuts', uk: 'Фейди й короткі стрижки' }, text: { cs: 'Za křeslem 8 let. Když chcete ostrý přechod, jděte za ním.', en: '8 years behind the chair. For a sharp fade, he is your man.', uk: '8 років за кріслом. Хочете чіткий перехід — вам до нього.' } },
+      { id: 'mar',  ini: 'M', name: 'Marek', role: { cs: 'Vousy a holení', en: 'Beards and shaves', uk: 'Бороди й гоління' }, text: { cs: 'Břitvu drží líp než pero. Holení u něj je malý rituál.', en: 'Handles a razor better than a pen. A shave with him is a small ritual.', uk: 'Бритву тримає краще, ніж ручку. Гоління в нього — маленький ритуал.' } },
+      { id: 'ond',  ini: 'O', name: 'Ondra', role: { cs: 'Klasika a děti', en: 'Classics and kids', uk: 'Класика й діти' }, text: { cs: 'Klidná ruka a trpělivost — i pro ty nejmenší.', en: 'A calm hand and lots of patience, even for the little ones.', uk: 'Спокійна рука й терпіння — навіть для наймолодших.' } }
+    ];
+    // 0 = neděle. null = zavřeno
+    const HOURS = { 1: ['10:00', '20:00'], 2: ['10:00', '20:00'], 3: ['10:00', '20:00'], 4: ['10:00', '20:00'], 5: ['10:00', '20:00'], 6: ['10:00', '16:00'], 0: null };
+
+    // ===== ПЕРЕКЛАДИ =====
+    const T = {
+      cs: {
+        'nav.services': 'Služby', 'nav.team': 'Tým', 'nav.gallery': 'Galerie', 'nav.contact': 'Kontakt', 'nav.book': 'Rezervovat',
+        'hero.l1': 'Střih.', 'hero.l2': 'Vousy.', 'hero.l3': 'Břitva.',
+        'hero.text': 'Pánský barbershop na Žižkově. Přijďte se ostříhat, upravit vousy nebo si dopřát holení horkým ručníkem a břitvou.',
+        'hero.btn1': 'Rezervovat termín', 'hero.btn2': 'Ceník',
+        'open.now': 'Dnes máme otevřeno do', 'open.later': 'Dnes otevíráme v', 'open.closed': 'Dnes je zavřeno, zítra od', 'open.done': 'Dnes už máme zavřeno, zítra od',
+        'svc.title': 'Ceník', 'svc.sub': 'Klikněte na službu a rovnou si ji zarezervujte.', 'min': 'min',
+        'team.title': 'Kdo vás ostříhá', 'gal.title': 'Z naší židle',
+        'book.title': 'Rezervace', 'book.sub': 'Vyberte službu, barbera a čas. Zabere to minutu.',
+        'book.s1': 'Služba', 'book.s2': 'Barber', 'book.s3': 'Den', 'book.s4': 'Čas', 'book.s5': 'Vaše kontakty',
+        'any': 'Kdokoli volný', 'pickDayFirst': 'Nejdřív vyberte den.', 'noSlots': 'Na tento den je obsazeno, zkuste jiný.',
+        'ph.name': 'Jméno', 'ph.phone': 'Telefon',
+        'sum.title': 'Vaše rezervace', 'sum.service': 'Služba', 'sum.barber': 'Barber', 'sum.when': 'Kdy', 'sum.len': 'Délka', 'sum.total': 'Celkem', 'sum.none': '—',
+        'sum.btn': 'Potvrdit rezervaci', 'sum.demo': 'Demo — rezervace se nikam neodesílá.',
+        'err.pick': 'Vyberte službu, den a čas.', 'err.contact': 'Vyplňte jméno a telefon.',
+        'done.title': 'Máte to!', 'done.text': 'Těšíme se na vás. Den předem vám pošleme SMS s připomínkou.', 'done.again': 'Nová rezervace',
+        'ct.title': 'Kde nás najdete', 'ct.addr': 'Praha 3 – Žižkov, 2 minuty od zastávky Lipanská.',
+        'days': ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So'], 'daysLong': ['Neděle', 'Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota'],
+        'closed': 'Zavřeno', 'today': 'Dnes', 'theme': 'Změnit motiv',
+        'foot.demo': 'demo projekt, fotky: Unsplash', 'foot.made': 'Web: Jazzhe'
+      },
+      uk: {
+        'nav.services': 'Послуги', 'nav.team': 'Команда', 'nav.gallery': 'Галерея', 'nav.contact': 'Контакти', 'nav.book': 'Записатися',
+        'hero.l1': 'Стрижка.', 'hero.l2': 'Борода.', 'hero.l3': 'Бритва.',
+        'hero.text': 'Чоловічий барбершоп на Жижкові. Приходьте підстригтися, оформити бороду або поголитися з гарячим рушником і бритвою.',
+        'hero.btn1': 'Записатися', 'hero.btn2': 'Ціни',
+        'open.now': 'Сьогодні відчинено до', 'open.later': 'Сьогодні відчиняємось о', 'open.closed': 'Сьогодні зачинено, завтра з', 'open.done': 'На сьогодні вже зачинено, завтра з',
+        'svc.title': 'Ціни', 'svc.sub': 'Натисніть на послугу — і одразу запишіться на неї.', 'min': 'хв',
+        'team.title': 'Хто вас підстриже', 'gal.title': 'З нашого крісла',
+        'book.title': 'Запис', 'book.sub': 'Оберіть послугу, барбера й час. Це займе хвилину.',
+        'book.s1': 'Послуга', 'book.s2': 'Барбер', 'book.s3': 'День', 'book.s4': 'Час', 'book.s5': 'Ваші контакти',
+        'any': 'Будь-хто вільний', 'pickDayFirst': 'Спершу оберіть день.', 'noSlots': 'На цей день усе зайнято, спробуйте інший.',
+        'ph.name': "Ім'я", 'ph.phone': 'Телефон',
+        'sum.title': 'Ваш запис', 'sum.service': 'Послуга', 'sum.barber': 'Барбер', 'sum.when': 'Коли', 'sum.len': 'Тривалість', 'sum.total': 'Разом', 'sum.none': '—',
+        'sum.btn': 'Підтвердити запис', 'sum.demo': 'Демо — запис нікуди не надсилається.',
+        'err.pick': 'Оберіть послугу, день і час.', 'err.contact': "Вкажіть ім'я та телефон.",
+        'done.title': 'Готово!', 'done.text': 'Чекаємо на вас. За день до візиту надішлемо SMS-нагадування.', 'done.again': 'Новий запис',
+        'ct.title': 'Де нас знайти', 'ct.addr': 'Прага 3 – Жижков, 2 хвилини від зупинки Lipanská.',
+        'days': ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'], 'daysLong': ['Неділя', 'Понеділок', 'Вівторок', 'Середа', 'Четвер', "П'ятниця", 'Субота'],
+        'closed': 'Зачинено', 'today': 'Сьогодні', 'theme': 'Змінити тему',
+        'foot.demo': 'демо-проєкт, фото: Unsplash', 'foot.made': 'Сайт: Jazzhe'
+      },
+      en: {
+        'nav.services': 'Services', 'nav.team': 'Team', 'nav.gallery': 'Gallery', 'nav.contact': 'Contact', 'nav.book': 'Book',
+        'hero.l1': 'Cut.', 'hero.l2': 'Beard.', 'hero.l3': 'Razor.',
+        'hero.text': 'A men\'s barbershop in Žižkov. Come in for a haircut, a beard trim or a hot-towel straight-razor shave.',
+        'hero.btn1': 'Book a time', 'hero.btn2': 'Prices',
+        'open.now': 'Open today until', 'open.later': 'Today we open at', 'open.closed': 'Closed today, tomorrow from', 'open.done': 'Closed for today, tomorrow from',
+        'svc.title': 'Prices', 'svc.sub': 'Tap a service to book it right away.', 'min': 'min',
+        'team.title': 'Who cuts your hair', 'gal.title': 'From our chair',
+        'book.title': 'Booking', 'book.sub': 'Pick a service, a barber and a time. It takes a minute.',
+        'book.s1': 'Service', 'book.s2': 'Barber', 'book.s3': 'Day', 'book.s4': 'Time', 'book.s5': 'Your details',
+        'any': 'Anyone free', 'pickDayFirst': 'Pick a day first.', 'noSlots': 'Fully booked that day, try another.',
+        'ph.name': 'Name', 'ph.phone': 'Phone',
+        'sum.title': 'Your booking', 'sum.service': 'Service', 'sum.barber': 'Barber', 'sum.when': 'When', 'sum.len': 'Length', 'sum.total': 'Total', 'sum.none': '—',
+        'sum.btn': 'Confirm booking', 'sum.demo': 'Demo — the booking is not sent anywhere.',
+        'err.pick': 'Pick a service, a day and a time.', 'err.contact': 'Fill in your name and phone.',
+        'done.title': 'You\'re booked!', 'done.text': 'See you soon. We\'ll text you a reminder the day before.', 'done.again': 'New booking',
+        'ct.title': 'Find us', 'ct.addr': 'Prague 3 – Žižkov, 2 minutes from the Lipanská stop.',
+        'days': ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], 'daysLong': ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        'closed': 'Closed', 'today': 'Today', 'theme': 'Change theme',
+        'foot.demo': 'demo project, photos: Unsplash', 'foot.made': 'Website: Jazzhe'
+      }
+    };
+
+    let lang = 'cs';
+    try {
+      const nav = (navigator.language || '').slice(0, 2);
+      lang = localStorage.getItem('britva-lang') || (nav === 'cs' || nav === 'sk' ? 'cs' : nav === 'uk' || nav === 'ru' ? 'uk' : 'en');
+    } catch (e) {}
+
+    // ===== Тема (зелена / світла) =====
+    let theme = 'green';
+    try { theme = localStorage.getItem('britva-theme') || 'green'; } catch (e) {}
+    function applyTheme() {
+      if (theme === 'light') document.documentElement.dataset.theme = 'light';
+      else delete document.documentElement.dataset.theme;
+      document.querySelector('meta[name=theme-color]').content = theme === 'light' ? '#EFEBE3' : '#15302A';
+    }
+    applyTheme();
+    document.getElementById('themeBtn').addEventListener('click', () => {
+      theme = theme === 'light' ? 'green' : 'light';
+      try { localStorage.setItem('britva-theme', theme); } catch (e) {}
+      applyTheme();
+    });
+    const t = k => T[lang][k];
+
+    // ===== Стан запису =====
+    const state = { service: null, barber: 'any', day: null, time: null, done: false };
+
+    function fmtDate(d) { return `${t('days')[d.getDay()]} ${d.getDate()}. ${d.getMonth() + 1}.`; }
+    function addDays(d, n) { const x = new Date(d); x.setDate(x.getDate() + n); x.setHours(0, 0, 0, 0); return x; }
+    const toMin = s => { const [h, m] = s.split(':').map(Number); return h * 60 + m; };
+    const toStr = m => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+
+    // Псевдовипадково «зайняті» слоти — щоб розклад виглядав живим
+    function taken(day, slot, barber) {
+      const key = day.getDate() * 31 + slot + (barber === 'any' ? 0 : barber.charCodeAt(0));
+      return barber === 'any' ? (key * 7) % 11 === 0 : (key * 13) % 5 === 0;
+    }
+
+    function render() {
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-i18n]').forEach(el => { const v = t(el.dataset.i18n); if (typeof v === 'string') el.textContent = v; });
+      document.querySelectorAll('[data-ph]').forEach(el => el.placeholder = t(el.dataset.ph));
+      document.querySelectorAll('.langs button').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+      document.getElementById('themeBtn').setAttribute('aria-label', t('theme'));
+      document.getElementById('themeBtn').title = t('theme');
+
+      // Прайс
+      document.getElementById('priceBoard').innerHTML = SERVICES.map(s => `
+        <li><button data-svc="${s.id}">
+          <span class="svc-name">${s.name[lang]}</span><span class="svc-price">${s.price} Kč</span>
+          <span class="svc-desc">${s.desc[lang]}</span><span class="svc-time">${s.min} ${t('min')}</span>
+        </button></li>`).join('');
+
+      // Команда
+      document.getElementById('teamGrid').innerHTML = BARBERS.map(b => `
+        <div class="barber"><div class="mono">${b.ini}</div><h3>${b.name}</h3><div class="role">${b.role[lang]}</div><p>${b.text[lang]}</p></div>`).join('');
+
+      // Години роботи + «сьогодні»
+      const now = new Date(), wd = now.getDay();
+      const order = [1, 2, 3, 4, 5, 6, 0];
+      document.getElementById('hours').innerHTML = order.map(d => `<li class="${d === wd ? 'now' : ''}"><span>${t('daysLong')[d]}</span><span>${HOURS[d] ? HOURS[d].join(' – ') : t('closed')}</span></li>`).join('');
+      const h = HOURS[wd], cur = now.getHours() * 60 + now.getMinutes(), todayEl = document.getElementById('today');
+      let next = 1; while (!HOURS[(wd + next) % 7]) next++;
+      const nextOpen = HOURS[(wd + next) % 7][0];
+      let txt, open = false;
+      if (!h) txt = `${t('open.closed')} ${nextOpen}`;
+      else if (cur < toMin(h[0])) txt = `${t('open.later')} ${h[0]}`;
+      else if (cur < toMin(h[1])) { txt = `${t('open.now')} ${h[1]}`; open = true; }
+      else txt = `${t('open.done')} ${nextOpen}`;
+      todayEl.querySelector('span').textContent = txt;
+      todayEl.classList.toggle('closed', !open);
+
+      renderBooking();
+    }
+
+    function renderBooking() {
+      // 1. Послуга
+      document.getElementById('pickService').innerHTML = SERVICES.map(s =>
+        `<button class="chip ${state.service === s.id ? 'on' : ''}" data-pick="service" data-v="${s.id}">${s.name[lang]} · ${s.price} Kč</button>`).join('');
+      // 2. Барбер
+      document.getElementById('pickBarber').innerHTML = [{ id: 'any', name: t('any') }, ...BARBERS].map(b =>
+        `<button class="chip ${state.barber === b.id ? 'on' : ''}" data-pick="barber" data-v="${b.id}">${b.name}</button>`).join('');
+      // 3. День (наступні 10 днів)
+      const today = addDays(new Date(), 0);
+      let days = '';
+      for (let i = 0; i < 10; i++) {
+        const d = addDays(today, i), closed = !HOURS[d.getDay()];
+        const label = i === 0 ? t('today') : t('days')[d.getDay()];
+        days += `<button class="chip day ${state.day === i ? 'on' : ''}" data-pick="day" data-v="${i}" ${closed ? 'disabled' : ''}>${label}<small>${d.getDate()}. ${d.getMonth() + 1}.</small></button>`;
+      }
+      document.getElementById('pickDay').innerHTML = days;
+      // 4. Час
+      const timeBox = document.getElementById('pickTime');
+      if (state.day === null) timeBox.innerHTML = `<p class="slots-hint">${t('pickDayFirst')}</p>`;
+      else {
+        const d = addDays(today, state.day), [o, c] = HOURS[d.getDay()];
+        const len = state.service ? SERVICES.find(s => s.id === state.service).min : 30;
+        const nowMin = new Date().getHours() * 60 + new Date().getMinutes();
+        let html = '', free = 0;
+        for (let m = toMin(o); m + len <= toMin(c); m += 30) {
+          const past = state.day === 0 && m <= nowMin + 30;
+          const busy = past || taken(d, m, state.barber);
+          if (!busy) free++;
+          html += `<button class="chip ${state.time === m ? 'on' : ''}" data-pick="time" data-v="${m}" ${busy ? 'disabled' : ''}>${toStr(m)}</button>`;
+        }
+        timeBox.innerHTML = free ? html : `<p class="slots-hint">${t('noSlots')}</p>`;
+      }
+      renderSummary();
+    }
+
+    function renderSummary() {
+      const box = document.getElementById('summary');
+      if (state.done) {
+        box.innerHTML = `<div class="done"><div class="display">${t('done.title')}</div><p>${t('done.text')}</p><p><b>${state.doneText}</b></p><button class="btn" id="again">${t('done.again')}</button></div>`;
+        document.getElementById('again').onclick = () => { Object.assign(state, { service: null, barber: 'any', day: null, time: null, done: false }); renderBooking(); };
+        return;
+      }
+      const s = SERVICES.find(x => x.id === state.service);
+      const b = state.barber === 'any' ? t('any') : BARBERS.find(x => x.id === state.barber).name;
+      const when = state.day !== null && state.time !== null ? `${fmtDate(addDays(new Date(), state.day))}, ${toStr(state.time)}` : t('sum.none');
+      box.innerHTML = `
+        <h3>${t('sum.title')}</h3>
+        <div class="sum-row"><span>${t('sum.service')}</span><span>${s ? s.name[lang] : t('sum.none')}</span></div>
+        <div class="sum-row"><span>${t('sum.barber')}</span><span>${b}</span></div>
+        <div class="sum-row"><span>${t('sum.when')}</span><span>${when}</span></div>
+        <div class="sum-row"><span>${t('sum.len')}</span><span>${s ? s.min + ' ' + t('min') : t('sum.none')}</span></div>
+        <div class="sum-total"><span>${t('sum.total')}</span><b>${s ? s.price + ' Kč' : '—'}</b></div>
+        <button class="btn" id="confirm">${t('sum.btn')}</button>
+        <p class="form-msg" id="msg"></p>
+        <p class="demo-note">${t('sum.demo')}</p>`;
+      document.getElementById('confirm').onclick = confirmBooking;
+    }
+
+    function confirmBooking() {
+      const msg = document.getElementById('msg');
+      if (!state.service || state.day === null || state.time === null) { msg.textContent = t('err.pick'); return; }
+      const name = document.getElementById('fName').value.trim(), phone = document.getElementById('fPhone').value.trim();
+      if (!name || !phone) { msg.textContent = t('err.contact'); document.getElementById(name ? 'fPhone' : 'fName').focus(); return; }
+      const s = SERVICES.find(x => x.id === state.service);
+      state.doneText = `${s.name[lang]}, ${fmtDate(addDays(new Date(), state.day))} ${toStr(state.time)}`;
+      state.done = true;
+      renderSummary();
+    }
+
+    // Кліки по вибору
+    document.getElementById('steps').addEventListener('click', e => {
+      const c = e.target.closest('[data-pick]'); if (!c || c.disabled) return;
+      const k = c.dataset.pick, v = c.dataset.v;
+      if (k === 'service') { state.service = v; state.time = null; }
+      if (k === 'barber') { state.barber = v; state.time = null; }
+      if (k === 'day') { state.day = +v; state.time = null; }
+      if (k === 'time') state.time = +v;
+      state.done = false;
+      renderBooking();
+    });
+    // Клік по послузі в прайсі — одразу до запису
+    document.getElementById('priceBoard').addEventListener('click', e => {
+      const b = e.target.closest('[data-svc]'); if (!b) return;
+      state.service = b.dataset.svc; state.time = null; state.done = false;
+      renderBooking();
+      document.getElementById('book').scrollIntoView({ behavior: 'smooth' });
+    });
+    document.querySelectorAll('.langs button').forEach(b => b.addEventListener('click', () => {
+      lang = b.dataset.lang;
+      try { localStorage.setItem('britva-lang', lang); } catch (e) {}
+      render();
+    }));
+
+    // ===== Галерея: перегляд на весь екран =====
+    const lb = document.getElementById('lightbox'), lbImg = document.getElementById('lbImg');
+    let lbIndex = 0;
+    const photos = () => [...document.querySelectorAll('#gallery-grid img')];
+    function openLb(i) {
+      const list = photos(); lbIndex = (i + list.length) % list.length;
+      lbImg.src = list[lbIndex].dataset.full;
+      document.getElementById('lbCount').textContent = `${lbIndex + 1} / ${list.length}`;
+      lb.hidden = false; document.getElementById('lbClose').focus();
+    }
+    document.getElementById('gallery-grid').addEventListener('click', e => {
+      const img = e.target.closest('figure')?.querySelector('img'); if (!img) return;
+      openLb(photos().indexOf(img));
+    });
+    document.getElementById('lbClose').onclick = () => lb.hidden = true;
+    document.getElementById('lbPrev').onclick = () => openLb(lbIndex - 1);
+    document.getElementById('lbNext').onclick = () => openLb(lbIndex + 1);
+    lb.addEventListener('click', e => { if (e.target === lb) lb.hidden = true; });
+    document.addEventListener('keydown', e => {
+      if (lb.hidden) return;
+      if (e.key === 'Escape') lb.hidden = true;
+      if (e.key === 'ArrowLeft') openLb(lbIndex - 1);
+      if (e.key === 'ArrowRight') openLb(lbIndex + 1);
+    });
+
+    render();
+  </script>
+</body>
+</html>
