@@ -96,6 +96,8 @@
     .window { display: grid; grid-template-columns: 1fr 34px; gap: 18px; align-items: stretch; }
     .arch { border-radius: 999px 999px 18px 18px; overflow: hidden; aspect-ratio: 4 / 5; background: var(--green-3); border: 6px solid var(--green-2); box-shadow: 0 0 0 1px var(--brass); }
     .arch img { width: 100%; height: 100%; object-fit: cover; }
+    .arch.no-photo img { display: none; }
+    .arch.no-photo { background: var(--green-3) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 240'%3E%3Cg fill='none' stroke='%23C59A4B' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M60 60h80v70H60z'/%3E%3Cpath d='M50 130h100v22H50z'/%3E%3Cpath d='M45 95v40M155 95v40'/%3E%3Cpath d='M100 152v38M70 200h60M100 190v10'/%3E%3C/g%3E%3C/svg%3E") center / 55% no-repeat; }
     .pole { position: relative; border-radius: 18px; overflow: hidden; border: 3px solid var(--brass); }
     .pole::before {
       content: ''; position: absolute; inset: -60px 0;
@@ -219,6 +221,16 @@
       *, *::before, *::after { animation: none !important; transition: none !important; }
     }
   </style>
+  <script>
+    // Фото в арці: якщо фото не завантажилось — пробуємо наступне зі списку
+    const ARCH_PHOTOS = ['1585747860715-2ba37e788b70', '1503951914875-452162b0f3f1', '1621645582931-d1d3e6564943', '1599351431202-1e0f0137899a', '1647140655214-e4a2d914971f'];
+    function archFallback(img) {
+      const next = (+img.dataset.try || 0) + 1;
+      img.dataset.try = next;
+      if (next < ARCH_PHOTOS.length) img.src = 'https://images.unsplash.com/photo-' + ARCH_PHOTOS[next] + '?auto=format&fit=crop&w=800&h=1000&q=75';
+      else img.parentNode.classList.add('no-photo');
+    }
+  </script>
 </head>
 <body>
 
@@ -253,7 +265,8 @@
           <p class="today" id="today"><i></i><span></span></p>
         </div>
         <div class="window">
-          <div class="arch"><img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=800&h=1000&q=75" alt="Barber chair by a brick wall" onerror="this.remove()"></div>
+          <!-- Фото в арці. Якщо перше не завантажиться — сайт спробує наступні зі списку ARCH_PHOTOS у скрипті -->
+          <div class="arch"><img id="archImg" alt="Barbershop" onerror="archFallback(this)" src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=800&h=1000&q=75"></div>
           <div class="pole" aria-hidden="true"></div>
         </div>
       </div>
