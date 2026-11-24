@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zrnko — Kavárna Praha</title>
+  <meta name="description" content="Zrnko — výběrová káva, domácí dezerty a rozvoz po Praze.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%233b2416'/%3E%3Cellipse cx='32' cy='32' rx='13' ry='18' fill='%23e8b07a' transform='rotate(25 32 32)'/%3E%3Cpath d='M26 18c8 8 4 20 12 28' stroke='%233b2416' stroke-width='3' fill='none'/%3E%3C/svg%3E">
+  <style>
+    /* ===== Кольори кав'ярні ===== */
+    :root {
+      --cream: #f6efe4;
+      --paper: #fffaf2;
+      --brown: #3b2416;
+      --brown-2: #6b4429;
+      --caramel: #c8834a;
+      --muted: #8a7462;
+      --line: #e6d9c6;
+      --green: #3f6b4a;
+      --radius: 20px;
+      --max: 1140px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--brown); line-height: 1.6; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; }
+    [hidden] { display: none !important; }
+    .container { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 20px; }
+    h1, h2, h3 { font-family: 'Fraunces', serif; line-height: 1.1; font-weight: 700; }
+    section { padding: 100px 0; }
+    .eyebrow { font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--caramel); margin-bottom: 12px; display: block; }
+    .title { font-size: clamp(34px, 5vw, 54px); margin-bottom: 16px; }
+    .sub { color: var(--muted); max-width: 540px; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 15px 30px; border-radius: 999px; border: none; font-weight: 700; transition: transform .2s, background .2s; }
+    .btn-dark { background: var(--brown); color: var(--cream); }
+    .btn-dark:hover { background: var(--brown-2); transform: translateY(-2px); }
+    .btn-line { border: 1.5px solid var(--brown); color: var(--brown); background: transparent; }
+    .btn-line:hover { background: var(--brown); color: var(--cream); }
+
+    /* ===== Шапка ===== */
+    header { position: sticky; top: 0; z-index: 50; background: rgba(246,239,228,.88); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    .nav { height: 74px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .logo { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .logo svg { width: 26px; height: 26px; }
+    .links { display: flex; gap: 30px; list-style: none; }
+    .links a { font-weight: 500; color: var(--brown-2); }
+    .links a:hover { color: var(--caramel); }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+    .lang-sw { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+    .lang-sw button { background: none; border: none; padding: 7px 12px; font-size: 13px; font-weight: 700; color: var(--muted); }
+    .lang-sw button.active { background: var(--brown); color: var(--cream); }
+    .cart-btn { position: relative; width: 46px; height: 46px; border-radius: 50%; background: var(--brown); color: var(--cream); border: none; display: grid; place-items: center; }
+    .cart-btn svg { width: 22px; height: 22px; }
+    .cart-count { position: absolute; top: -4px; right: -4px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: var(--caramel); color: #fff; font-size: 12px; font-weight: 700; display: grid; place-items: center; transition: transform .2s; }
+    .cart-count.bump { transform: scale(1.35); }
+
+    /* ===== Головний екран ===== */
+    .hero { padding: 70px 0 90px; }
+    .hero-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 50px; align-items: center; }
+    .hero h1 { font-size: clamp(44px, 7vw, 82px); margin-bottom: 22px; }
+    .hero h1 em { font-style: italic; color: var(--caramel); }
+    .hero p { font-size: 19px; color: var(--muted); max-width: 470px; margin-bottom: 34px; }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-info { display: flex; gap: 34px; margin-top: 44px; flex-wrap: wrap; }
+    .hero-info b { display: block; font-family: 'Fraunces', serif; font-size: 26px; }
+    .hero-info span { font-size: 14px; color: var(--muted); }
+    .hero-art { position: relative; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #e9c9a3, #c8834a 60%, #8d5530); display: grid; place-items: center; }
+    .hero-art svg { width: 62%; filter: drop-shadow(0 30px 40px rgba(59,36,22,.35)); }
+    .sticker { position: absolute; background: var(--paper); border-radius: 18px; padding: 12px 18px; box-shadow: 0 14px 30px rgba(59,36,22,.15); font-weight: 700; font-size: 15px; }
+    .sticker small { display: block; font-weight: 500; color: var(--muted); font-size: 12px; }
+    .sticker.s1 { top: 8%; left: -4%; transform: rotate(-6deg); }
+    .sticker.s2 { bottom: 10%; right: -4%; transform: rotate(5deg); }
+    .steam { animation: steam 3s ease-in-out infinite; transform-origin: bottom; }
+    .steam:nth-child(2) { animation-delay: .6s; }
+    .steam:nth-child(3) { animation-delay: 1.2s; }
+    @keyframes steam { 0%,100% { opacity: .2; transform: translateY(6px); } 50% { opacity: .9; transform: translateY(-6px); } }
+
+    /* ===== Переваги ===== */
+    .perks { background: var(--brown); color: var(--cream); padding: 34px 0; }
+    .perks-row { display: flex; justify-content: space-around; gap: 24px; flex-wrap: wrap; text-align: center; }
+    .perks-row div { font-weight: 500; }
+    .perks-row b { color: #e8b07a; font-family: 'Fraunces', serif; font-size: 20px; margin-right: 6px; }
+
+    /* ===== Меню ===== */
+    .menu-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 40px; }
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tab { padding: 10px 20px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--paper); font-weight: 700; color: var(--brown-2); transition: .2s; }
+    .tab.active, .tab:hover { background: var(--brown); border-color: var(--brown); color: var(--cream); }
+    .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .tabs { justify-content: flex-start; }
+    .item { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; display: flex; flex-direction: column; transition: transform .25s, box-shadow .25s; animation: fadeUp .4s both; }
+    .item:hover { transform: translateY(-5px); box-shadow: 0 18px 34px rgba(59,36,22,.1); }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } }
+    .item-pic { aspect-ratio: 4 / 3; border-radius: 14px; margin-bottom: 18px; display: grid; place-items: center; font-size: 64px; }
+    .item h3 { font-size: 22px; margin-bottom: 6px; }
+    .item p { color: var(--muted); font-size: 15px; flex: 1; margin-bottom: 18px; }
+    .item-foot { display: flex; justify-content: space-between; align-items: center; }
+    .item-price { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 700; }
+    .add { width: 44px; height: 44px; border-radius: 50%; border: none; background: var(--caramel); color: #fff; font-size: 24px; line-height: 1; transition: transform .2s, background .2s; }
+    .add:hover { background: var(--brown); transform: rotate(90deg); }
+    .badge-new { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; background: var(--green); color: #fff; padding: 3px 10px; border-radius: 999px; margin-bottom: 8px; }
+
+    /* ===== Як це працює ===== */
+    #how { background: var(--paper); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 50px; }
+    .how-card { text-align: center; padding: 10px 20px; }
+    .how-num { width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 18px; display: grid; place-items: center; background: var(--cream); border: 1.5px dashed var(--caramel); font-family: 'Fraunces', serif; font-size: 26px; font-weight: 700; color: var(--caramel); }
+    .how-card h3 { font-size: 22px; margin-bottom: 8px; }
+    .how-card p { color: var(--muted); }
+
+    /* ===== Контакти ===== */
+    .visit { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .visit-card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 36px; }
+    .visit-card h3 { font-size: 26px; margin-bottom: 18px; }
+    .hours { list-style: none; }
+    .hours li { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed var(--line); }
+    .hours li:last-child { border: none; }
+    .map { border-radius: var(--radius); min-height: 280px; background:
+      linear-gradient(90deg, transparent 48%, #e2d3bd 48% 52%, transparent 52%),
+      linear-gradient(0deg, transparent 58%, #e2d3bd 58% 62%, transparent 62%),
+      linear-gradient(30deg, transparent 70%, #e2d3bd 70% 72%, transparent 72%),
+      #efe5d6; position: relative; border: 1px solid var(--line); }
+    .pin { position: absolute; left: 50%; top: 60%; transform: translate(-50%, -100%); background: var(--brown); color: var(--cream); padding: 8px 14px; border-radius: 12px; font-weight: 700; font-size: 14px; white-space: nowrap; }
+    .pin::after { content: ''; position: absolute; left: 50%; bottom: -7px; transform: translateX(-50%); border: 7px solid transparent; border-top-color: var(--brown); border-bottom: 0; }
+
+    footer { background: var(--brown); color: #cdb9a5; padding: 40px 0; font-size: 14px; }
+    .foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+    /* ===== Кошик (виїжджає справа) ===== */
+    .overlay { position: fixed; inset: 0; background: rgba(30,18,10,.45); z-index: 90; opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .overlay.open { opacity: 1; pointer-events: auto; }
+    .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(420px, 100%); background: var(--paper); z-index: 100; transform: translateX(100%); transition: transform .35s ease; display: flex; flex-direction: column; }
+    .drawer.open { transform: none; }
+    .drawer-head { display: flex; justify-content: space-between; align-items: center; padding: 22px 24px; border-bottom: 1px solid var(--line); }
+    .drawer-head h3 { font-size: 26px; }
+    .x { background: none; border: none; font-size: 28px; color: var(--muted); line-height: 1; }
+    .drawer-body { flex: 1; overflow-y: auto; padding: 18px 24px; }
+    .empty { text-align: center; color: var(--muted); padding: 60px 10px; }
+    .empty div { font-size: 54px; margin-bottom: 10px; }
+    .line-item { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+    .line-pic { width: 52px; height: 52px; border-radius: 12px; display: grid; place-items: center; font-size: 26px; flex-shrink: 0; }
+    .line-info { flex: 1; }
+    .line-info b { display: block; }
+    .line-info span { color: var(--muted); font-size: 14px; }
+    .qty { display: flex; align-items: center; gap: 10px; }
+    .qty button { width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--cream); font-weight: 700; }
+    .drawer-foot { padding: 20px 24px 26px; border-top: 1px solid var(--line); }
+    .mode { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+    .mode button { padding: 11px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--cream); font-weight: 700; color: var(--brown-2); }
+    .mode button.active { border-color: var(--brown); background: var(--brown); color: var(--cream); }
+    .field { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1.5px solid var(--line); background: #fff; font: inherit; margin-bottom: 10px; color: var(--brown); }
+    .field:focus { outline: none; border-color: var(--caramel); }
+    .sum { display: flex; justify-content: space-between; margin: 6px 0; color: var(--muted); }
+    .sum.total { color: var(--brown); font-weight: 700; font-size: 19px; margin: 12px 0 16px; }
+    .drawer-foot .btn { width: 100%; }
+    .done { text-align: center; padding: 50px 10px; }
+    .done div { font-size: 60px; margin-bottom: 12px; }
+    .done h3 { font-size: 28px; margin-bottom: 8px; }
+    .done p { color: var(--muted); margin-bottom: 24px; }
+    .demo-note { font-size: 12px; color: var(--muted); text-align: center; margin-top: 10px; }
+
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 120px); background: var(--brown); color: var(--cream); padding: 12px 22px; border-radius: 999px; font-weight: 500; z-index: 80; transition: transform .3s; }
+    .toast.show { transform: translate(-50%, 0); }
+
+    .item-pic { position: relative; overflow: hidden; }
+    .item-pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+    .item:hover .item-pic img { transform: scale(1.07); }
+    .line-pic { position: relative; overflow: hidden; }
+    .line-pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+    /* ===== Фон: зерниста текстура паперу ===== */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .35; mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .23 0 0 0 0 .14 0 0 0 0 .09 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    header, .drawer, .overlay, .toast { z-index: 60; }
+    .drawer { z-index: 100; } .overlay { z-index: 90; }
+
+    /* ===== Головний екран: плями і зернятка ===== */
+    .hero { position: relative; overflow: hidden; }
+    .blob { position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none; z-index: 0; animation: drift 14s ease-in-out infinite alternate; }
+    .blob.b1 { width: 420px; height: 420px; background: #f0c99c; top: -120px; left: -120px; opacity: .55; }
+    .blob.b2 { width: 360px; height: 360px; background: #d9e2c8; bottom: -140px; left: 35%; opacity: .5; animation-delay: -5s; }
+    .blob.b3 { width: 300px; height: 300px; background: #f3d4c4; top: 10%; right: -80px; opacity: .45; animation-delay: -9s; }
+    @keyframes drift { to { transform: translate(40px, 30px) scale(1.08); } }
+    .hero-grid { position: relative; z-index: 2; }
+    .beans { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+    .bean { position: absolute; width: var(--s); opacity: .8; animation: float var(--d) ease-in-out infinite; animation-delay: var(--delay); }
+    .bean svg { width: 100%; display: block; transition: transform .6s ease-out; }
+    @keyframes float { 0%,100% { transform: translateY(0) rotate(var(--r)); } 50% { transform: translateY(-22px) rotate(calc(var(--r) + 20deg)); } }
+
+    /* ===== Рухлива стрічка переваг ===== */
+    .perks { overflow: hidden; padding: 22px 0; position: relative; z-index: 2; }
+    .marquee { display: flex; width: max-content; animation: marquee 28s linear infinite; }
+    .marquee span.it { font-family: 'Fraunces', serif; font-size: 22px; white-space: nowrap; padding: 0 28px; display: flex; align-items: center; gap: 28px; }
+    .marquee span.it::after { content: '✦'; color: #e8b07a; font-size: 16px; }
+    .perks:hover .marquee { animation-play-state: paused; }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    /* ===== Хвилясті переходи ===== */
+    .wave { display: block; width: 100%; height: 60px; position: relative; z-index: 2; }
+    #how { border: none; position: relative; z-index: 2; overflow: hidden; }
+    #how::before { content: '☕'; position: absolute; font-size: 220px; opacity: .05; right: 4%; top: 10%; transform: rotate(-12deg); pointer-events: none; }
+    section, footer { position: relative; z-index: 2; }
+
+    /* ===== Поява при скролі ===== */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s ease, transform .8s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* Для тих, у кого в системі вимкнені анімації */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    /* ===== Адаптив ===== */
+    @media (max-width: 920px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-art { max-width: 420px; width: 100%; margin: 0 auto; }
+      .menu-grid { grid-template-columns: 1fr 1fr; }
+      .visit { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 680px) {
+      section { padding: 70px 0; }
+      .links { display: none; }
+      .menu-grid, .how-grid { grid-template-columns: 1fr; }
+      .sticker.s1 { left: 0; } .sticker.s2 { right: 0; }
+      .visit-card { padding: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav">
+      <a href="#" class="logo">
+        <svg viewBox="0 0 32 32"><ellipse cx="16" cy="16" rx="9" ry="13" fill="#c8834a" transform="rotate(25 16 16)"/><path d="M12 6c6 6 2 14 8 20" stroke="#3b2416" stroke-width="2" fill="none"/></svg>
+        Zrnko
+      </a>
+      <ul class="links">
+        <li><a href="#menu" data-i18n="nav.menu">Menu</a></li>
+        <li><a href="#how" data-i18n="nav.how">Jak to funguje</a></li>
+        <li><a href="#visit" data-i18n="nav.visit">Kontakt</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="lang-sw">
+          <button data-lang="cs">CZ</button>
+          <button data-lang="en">EN</button>
+        </div>
+        <button class="cart-btn" id="cartBtn" aria-label="Cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== ГОЛОВНИЙ ЕКРАН ===== -->
+  <section class="hero">
+    <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+    <div class="beans" id="beans"></div>
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow" data-i18n="hero.eyebrow">Výběrová káva · Praha 2</span>
+        <h1 data-i18n="hero.title">Káva, která <em>voní domovem</em></h1>
+        <p data-i18n="hero.text">Pražíme sami, pečeme každé ráno. Objednejte si online — vyzvedněte bez čekání, nebo vám kávu přivezeme až domů.</p>
+        <div class="hero-btns">
+          <a href="#menu" class="btn btn-dark" data-i18n="hero.btn1">Objednat online →</a>
+          <a href="#visit" class="btn btn-line" data-i18n="hero.btn2">Kde nás najdete</a>
+        </div>
+        <div class="hero-info">
+          <div><b>15 min</b><span data-i18n="hero.i1">rozvoz po okolí</span></div>
+          <div><b>7:30</b><span data-i18n="hero.i2">otevíráme denně</span></div>
+          <div><b>4.9 ★</b><span data-i18n="hero.i3">hodnocení hostů</span></div>
+        </div>
+      </div>
+      <div class="hero-art">
+        <svg viewBox="0 0 200 200" aria-hidden="true">
+          <g stroke="#fffaf2" stroke-width="5" stroke-linecap="round" fill="none">
+            <path class="steam" d="M78 52c-8-10 8-16 0-28"/>
+            <path class="steam" d="M100 50c-8-10 8-16 0-28"/>
+            <path class="steam" d="M122 52c-8-10 8-16 0-28"/>
+          </g>
+          <ellipse cx="100" cy="170" rx="78" ry="12" fill="#3b2416" opacity=".25"/>
+          <path d="M40 72h120l-12 82a18 18 0 0 1-18 16H70a18 18 0 0 1-18-16z" fill="#fffaf2"/>
+          <path d="M158 88h10a20 20 0 0 1 0 40h-14" stroke="#fffaf2" stroke-width="10" fill="none"/>
+          <ellipse cx="100" cy="74" rx="60" ry="10" fill="#6b4429"/>
+          <path d="M84 72c8-6 24-6 32 0c-8 5-24 5-32 0z" fill="#e9c9a3"/>
+        </svg>
+        <div class="sticker s1">☕ Flat white<small data-i18n="hero.s1">nejoblíbenější</small></div>
+        <div class="sticker s2">🥐 <span data-i18n="hero.s2t">Čerstvé</span><small data-i18n="hero.s2">každé ráno v 7:00</small></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="perks">
+    <!-- Стрічка повторена двічі, щоб рух був безперервним -->
+    <div class="marquee">
+      <span class="it" data-i18n="perk1">Vlastní pražírna</span><span class="it" data-i18n="perk2">Rostlinná mléka zdarma</span><span class="it" data-i18n="perk3">Rozvoz od 300 Kč zdarma</span><span class="it" data-i18n="perk4">Pečeme každé ráno</span>
+      <span class="it" data-i18n="perk1">Vlastní pražírna</span><span class="it" data-i18n="perk2">Rostlinná mléka zdarma</span><span class="it" data-i18n="perk3">Rozvoz od 300 Kč zdarma</span><span class="it" data-i18n="perk4">Pečeme každé ráno</span>
+      <span class="it" data-i18n="perk1">Vlastní pražírna</span><span class="it" data-i18n="perk2">Rostlinná mléka zdarma</span><span class="it" data-i18n="perk3">Rozvoz od 300 Kč zdarma</span><span class="it" data-i18n="perk4">Pečeme každé ráno</span>
+      <span class="it" data-i18n="perk1">Vlastní pražírna</span><span class="it" data-i18n="perk2">Rostlinná mléka zdarma</span><span class="it" data-i18n="perk3">Rozvoz od 300 Kč zdarma</span><span class="it" data-i18n="perk4">Pečeme každé ráno</span>
+    </div>
+  </div>
+
+  <!-- ===== МЕНЮ ===== -->
+  <section id="menu">
+    <div class="container">
+      <div class="menu-head">
+        <div>
+          <span class="eyebrow" data-i18n="menu.eyebrow">Menu</span>
+          <h2 class="title" data-i18n="menu.title">Co si dáte?</h2>
+          <p class="sub" data-i18n="menu.sub">Přidejte do košíku a objednejte během minuty.</p>
+        </div>
+        <div class="tabs" id="tabs">
+          <button class="tab active" data-cat="coffee" data-i18n="cat.coffee">Káva</button>
+          <button class="tab" data-cat="cold" data-i18n="cat.cold">Ledové</button>
+          <button class="tab" data-cat="sweet" data-i18n="cat.sweet">Dezerty</button>
+          <button class="tab" data-cat="beans" data-i18n="cat.beans">Káva domů</button>
+        </div>
+      </div>
+      <div class="menu-grid" id="menuGrid"></div>
+    </div>
+  </section>
+
+  <!-- ===== ЯК ЦЕ ПРАЦЮЄ ===== -->
+  <svg class="wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60V30C240 0 480 0 720 30s480 30 720 0v30z" fill="#fffaf2"/></svg>
+  <section id="how">
+    <div class="container" style="text-align:center">
+      <span class="eyebrow" data-i18n="how.eyebrow">Jak to funguje</span>
+      <h2 class="title" data-i18n="how.title">Káva na dvě kliknutí</h2>
+      <div class="how-grid">
+        <div class="how-card"><div class="how-num">1</div><h3 data-i18n="h1.t">Vyberte</h3><p data-i18n="h1.p">Přidejte oblíbené nápoje a dezerty do košíku.</p></div>
+        <div class="how-card"><div class="how-num">2</div><h3 data-i18n="h2.t">Objednejte</h3><p data-i18n="h2.p">Zvolte rozvoz nebo vyzvednutí a odešlete objednávku.</p></div>
+        <div class="how-card"><div class="how-num">3</div><h3 data-i18n="h3.t">Užívejte si</h3><p data-i18n="h3.p">Do 15 minut je vaše káva připravená — nebo už u vás.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <svg class="wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0v30c240 30 480 30 720 0s480-30 720 0V0z" fill="#fffaf2"/></svg>
+
+  <!-- ===== КОНТАКТИ ===== -->
+  <section id="visit">
+    <div class="container">
+      <span class="eyebrow" data-i18n="visit.eyebrow">Kontakt</span>
+      <h2 class="title" data-i18n="visit.title">Zastavte se u nás</h2>
+      <div class="visit" style="margin-top:36px">
+        <div class="visit-card">
+          <h3 data-i18n="visit.hours">Otevírací doba</h3>
+          <ul class="hours">
+            <li><span data-i18n="d1">Po – Pá</span><b>7:30 – 19:00</b></li>
+            <li><span data-i18n="d2">Sobota</span><b>9:00 – 19:00</b></li>
+            <li><span data-i18n="d3">Neděle</span><b>9:00 – 17:00</b></li>
+          </ul>
+          <p style="margin-top:22px;color:var(--muted)">📍 Vinohradská 00, Praha 2<br>📞 +420 000 000 000</p>
+        </div>
+        <div class="map"><div class="pin">☕ Zrnko</div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container foot">
+      <span>© Zrnko <span data-i18n="foot.demo">— demo projekt</span></span>
+      <span data-i18n="foot.made">Web: Jazzhe</span>
+    </div>
+  </footer>
+
+  <!-- ===== КОШИК ===== -->
+  <div class="overlay" id="overlay"></div>
+  <aside class="drawer" id="drawer" aria-label="Cart">
+    <div class="drawer-head">
+      <h3 data-i18n="cart.title">Váš košík</h3>
+      <button class="x" id="closeCart" aria-label="Close">×</button>
+    </div>
+    <div class="drawer-body" id="cartBody"></div>
+    <div class="drawer-foot" id="cartFoot">
+      <div class="mode" id="mode">
+        <button class="active" data-mode="delivery" data-i18n="mode.delivery">🛵 Rozvoz</button>
+        <button data-mode="pickup" data-i18n="mode.pickup">🏃 Vyzvednutí</button>
+      </div>
+      <input class="field" id="fName" data-i18n-ph="ph.name" placeholder="Jméno">
+      <input class="field" id="fPhone" data-i18n-ph="ph.phone" placeholder="Telefon" type="tel">
+      <input class="field" id="fAddr" data-i18n-ph="ph.addr" placeholder="Adresa doručení">
+      <div class="sum"><span data-i18n="sum.items">Položky</span><span id="sItems">0 Kč</span></div>
+      <div class="sum" id="rowDelivery"><span data-i18n="sum.delivery">Rozvoz</span><span id="sDelivery">0 Kč</span></div>
+      <div class="sum total"><span data-i18n="sum.total">Celkem</span><span id="sTotal">0 Kč</span></div>
+      <button class="btn btn-dark" id="orderBtn" data-i18n="cart.order">Objednat</button>
+      <p class="demo-note" data-i18n="cart.demo">Demo — objednávka se nikam neodesílá.</p>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ===== МЕНЮ (щоб змінити страви — редагуй цей список) =====
+    const U = id => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=600&h=450&q=75`;
+    const MENU = [
+      // ☕ Káva
+      { id: 'esp',   cat: 'coffee', emoji: '☕', bg: '#efd9bf', price: 59,  img: U('1510591509098-f4fdc6d0ff04'), name: { cs: 'Espresso', en: 'Espresso' }, desc: { cs: 'Krátké, silné, s tóny čokolády.', en: 'Short and strong with chocolate notes.' } },
+      { id: 'macc',  cat: 'coffee', emoji: '☕', bg: '#ead4b8', price: 65,  img: U('1610889556528-9a770e32642f'), name: { cs: 'Macchiato', en: 'Macchiato' }, desc: { cs: 'Espresso s kapkou mléčné pěny.', en: 'Espresso with a dash of milk foam.' } },
+      { id: 'amer',  cat: 'coffee', emoji: '☕', bg: '#e6d3b9', price: 69,  img: U('1514432324607-a09d9b4aefdd'), name: { cs: 'Americano', en: 'Americano' }, desc: { cs: 'Espresso doplněné horkou vodou.', en: 'Espresso topped up with hot water.' } },
+      { id: 'cort',  cat: 'coffee', emoji: '☕', bg: '#efd9bf', price: 75,  img: U('1519532059956-a63a37af5deb'), name: { cs: 'Cortado', en: 'Cortado' }, desc: { cs: 'Půl na půl espresso a teplé mléko.', en: 'Half espresso, half warm milk.' } },
+      { id: 'capp',  cat: 'coffee', emoji: '☕', bg: '#f2e0c9', price: 79,  img: U('1509042239860-f550ce710b93'), name: { cs: 'Cappuccino', en: 'Cappuccino' }, desc: { cs: 'Klasika s hustou mléčnou pěnou.', en: 'The classic with thick milk foam.' } },
+      { id: 'flat',  cat: 'coffee', emoji: '☕', bg: '#e8cfae', price: 89,  img: U('1534778101976-62847782c213'), isNew: true, name: { cs: 'Flat white', en: 'Flat white' }, desc: { cs: 'Dvojité espresso a sametové mléko.', en: 'Double espresso with velvety milk.' } },
+      { id: 'latte', cat: 'coffee', emoji: '☕', bg: '#f2e0c9', price: 85,  img: U('1563090308-5a7889e40542'), name: { cs: 'Caffè latte', en: 'Caffè latte' }, desc: { cs: 'Jemná káva s velkou porcí mléka.', en: 'Mild coffee with lots of milk.' } },
+      { id: 'mocha', cat: 'coffee', emoji: '☕', bg: '#e3c9b0', price: 95,  img: U('1550247611-e651810312fe'), name: { cs: 'Mocha', en: 'Mocha' }, desc: { cs: 'Espresso, belgická čokoláda a mléko.', en: 'Espresso, Belgian chocolate and milk.' } },
+      { id: 'filt',  cat: 'coffee', emoji: '🫖', bg: '#e6d3b9', price: 75,  img: U('1442512595331-e89e73853f31'), name: { cs: 'Filtrovaná káva', en: 'Filter coffee' }, desc: { cs: 'Sezónní zrno, připravené na V60 nebo Chemexu.', en: 'Seasonal beans brewed on V60 or Chemex.' } },
+      // 🧊 Ledové
+      { id: 'ice',   cat: 'cold', emoji: '🧊', bg: '#d9e4e6', price: 85,  img: U('1461023058943-07fcbe16d735'), name: { cs: 'Ledové latte', en: 'Iced latte' }, desc: { cs: 'Espresso, mléko a hodně ledu.', en: 'Espresso, milk and lots of ice.' } },
+      { id: 'icar',  cat: 'cold', emoji: '🧊', bg: '#eadcc8', price: 95,  img: U('1592663527359-cf6642f54cff'), name: { cs: 'Ledová karamelová káva', en: 'Iced caramel coffee' }, desc: { cs: 'Domácí karamel, smetana a led.', en: 'Homemade caramel, cream and ice.' } },
+      { id: 'tonic', cat: 'cold', emoji: '🍋', bg: '#e9ecc9', price: 95,  img: U('1753700281029-b3d15df20ec4'), isNew: true, name: { cs: 'Espresso tonic', en: 'Espresso tonic' }, desc: { cs: 'Osvěžující tonik s espressem a citronem.', en: 'Refreshing tonic with espresso and lemon.' } },
+      { id: 'cold',  cat: 'cold', emoji: '🥤', bg: '#dfd6cc', price: 89,  img: U('1517701550927-30cf4ba1dba5'), name: { cs: 'Cold brew', en: 'Cold brew' }, desc: { cs: 'Louhováno 18 hodin, jemné a sladké.', en: 'Steeped for 18 hours, smooth and sweet.' } },
+      { id: 'frap',  cat: 'cold', emoji: '🥤', bg: '#e6d6cc', price: 105, img: U('1718267050202-9b1b6bfb8545'), name: { cs: 'Frappé', en: 'Frappé' }, desc: { cs: 'Ledová káva se šlehačkou a čokoládou.', en: 'Blended iced coffee with whipped cream.' } },
+      { id: 'affo',  cat: 'cold', emoji: '🍨', bg: '#f0e2cf', price: 99,  img: U('1594631661960-34762327295a'), name: { cs: 'Affogato', en: 'Affogato' }, desc: { cs: 'Vanilková zmrzlina zalitá espressem.', en: 'Vanilla ice cream drowned in espresso.' } },
+      // 🍰 Dezerty
+      { id: 'crois', cat: 'sweet', emoji: '🥐', bg: '#f3dcb5', price: 55,  img: U('1530610476181-d83430b64dcd'), name: { cs: 'Máslový croissant', en: 'Butter croissant' }, desc: { cs: 'Pečený každé ráno v 7:00.', en: 'Baked fresh every morning at 7:00.' } },
+      { id: 'cinn',  cat: 'sweet', emoji: '🥮', bg: '#f0d9bd', price: 69,  img: U('1649308401368-a68b77116605'), name: { cs: 'Skořicový šnek', en: 'Cinnamon roll' }, desc: { cs: 'S krémovou polevou, ještě teplý.', en: 'With cream cheese icing, still warm.' } },
+      { id: 'cake',  cat: 'sweet', emoji: '🍰', bg: '#f1d7d2', price: 79,  img: U('1524351199678-941a58a3df50'), name: { cs: 'Cheesecake', en: 'Cheesecake' }, desc: { cs: 'Krémový, s domácí malinovou omáčkou.', en: 'Creamy, with homemade raspberry sauce.' } },
+      { id: 'tira',  cat: 'sweet', emoji: '🍰', bg: '#e9d6c2', price: 89,  img: U('1571877227200-a0d98ea607e9'), name: { cs: 'Tiramisu', en: 'Tiramisu' }, desc: { cs: 'S naším espressem a mascarpone.', en: 'Made with our espresso and mascarpone.' } },
+      { id: 'cook',  cat: 'sweet', emoji: '🍪', bg: '#ecd8bf', price: 45,  img: U('1499636136210-6f4ee915583e'), name: { cs: 'Cookie', en: 'Cookie' }, desc: { cs: 'S belgickou čokoládou a mořskou solí.', en: 'Belgian chocolate and sea salt.' } },
+      // 🫘 Zrnková káva domů
+      { id: 'b-eth', cat: 'beans', emoji: '🫘', bg: '#e8d5bd', price: 329, img: U('1562051036-e0eea191d42f'), isNew: true, name: { cs: 'Etiopie Yirgacheffe · 250 g', en: 'Ethiopia Yirgacheffe · 250 g' }, desc: { cs: 'Květinová, s tóny citrusů a jasmínu. Na filtr.', en: 'Floral, with citrus and jasmine notes. For filter.' } },
+      { id: 'b-bra', cat: 'beans', emoji: '🫘', bg: '#e3cdb3', price: 289, img: U('1690983326252-ce6205fb7055'), name: { cs: 'Brazílie Cerrado · 250 g', en: 'Brazil Cerrado · 250 g' }, desc: { cs: 'Oříšky a mléčná čokoláda. Ideální na espresso.', en: 'Nuts and milk chocolate. Perfect for espresso.' } },
+      { id: 'b-col', cat: 'beans', emoji: '🫘', bg: '#ead8c2', price: 309, img: U('1511920170033-f8396924c348'), name: { cs: 'Kolumbie Huila · 250 g', en: 'Colombia Huila · 250 g' }, desc: { cs: 'Karamel, červené jablko a sladká dochuť.', en: 'Caramel, red apple and a sweet finish.' } }
+    ];
+    const DELIVERY_FEE = 49, FREE_FROM = 300;
+
+    // ===== ПЕРЕКЛАДИ =====
+    const T = {
+      cs: {
+        "nav.menu": "Menu", "nav.how": "Jak to funguje", "nav.visit": "Kontakt",
+        "hero.eyebrow": "Výběrová káva · Praha 2",
+        "hero.title": "Káva, která <em>voní domovem</em>",
+        "hero.text": "Pražíme sami, pečeme každé ráno. Objednejte si online — vyzvedněte bez čekání, nebo vám kávu přivezeme až domů.",
+        "hero.btn1": "Objednat online →", "hero.btn2": "Kde nás najdete",
+        "hero.i1": "rozvoz po okolí", "hero.i2": "otevíráme denně", "hero.i3": "hodnocení hostů",
+        "hero.s1": "nejoblíbenější", "hero.s2t": "Čerstvé", "hero.s2": "každé ráno v 7:00",
+        "perk1": "Vlastní pražírna", "perk2": "Rostlinná mléka zdarma", "perk3": "Rozvoz od 300 Kč zdarma", "perk4": "Pečeme každé ráno",
+        "menu.eyebrow": "Menu", "menu.title": "Co si dáte?", "menu.sub": "Přidejte do košíku a objednejte během minuty.",
+        "cat.coffee": "Káva", "cat.cold": "Ledové", "cat.sweet": "Dezerty", "cat.beans": "Káva domů", "new": "Novinka",
+        "how.eyebrow": "Jak to funguje", "how.title": "Káva na dvě kliknutí",
+        "h1.t": "Vyberte", "h1.p": "Přidejte oblíbené nápoje a dezerty do košíku.",
+        "h2.t": "Objednejte", "h2.p": "Zvolte rozvoz nebo vyzvednutí a odešlete objednávku.",
+        "h3.t": "Užívejte si", "h3.p": "Do 15 minut je vaše káva připravená — nebo už u vás.",
+        "visit.eyebrow": "Kontakt", "visit.title": "Zastavte se u nás", "visit.hours": "Otevírací doba",
+        "d1": "Po – Pá", "d2": "Sobota", "d3": "Neděle",
+        "foot.demo": "— demo projekt · foto: Unsplash", "foot.made": "Web: Jazzhe",
+        "cart.title": "Váš košík", "cart.empty": "Košík je zatím prázdný", "cart.order": "Objednat", "cart.demo": "Demo — objednávka se nikam neodesílá.",
+        "mode.delivery": "🛵 Rozvoz", "mode.pickup": "🏃 Vyzvednutí",
+        "ph.name": "Jméno", "ph.phone": "Telefon", "ph.addr": "Adresa doručení",
+        "sum.items": "Položky", "sum.delivery": "Rozvoz", "sum.total": "Celkem", "free": "zdarma",
+        "added": "přidáno do košíku", "fill": "Vyplňte prosím jméno, telefon a adresu",
+        "done.t": "Děkujeme!", "done.p": "Objednávka přijata. Brzy vám zavoláme pro potvrzení.", "done.btn": "Zpět do menu"
+      },
+      en: {
+        "nav.menu": "Menu", "nav.how": "How it works", "nav.visit": "Contact",
+        "hero.eyebrow": "Specialty coffee · Prague 2",
+        "hero.title": "Coffee that <em>smells like home</em>",
+        "hero.text": "We roast our own beans and bake every morning. Order online — pick up without waiting, or get it delivered to your door.",
+        "hero.btn1": "Order online →", "hero.btn2": "Find us",
+        "hero.i1": "local delivery", "hero.i2": "open daily", "hero.i3": "guest rating",
+        "hero.s1": "most loved", "hero.s2t": "Fresh", "hero.s2": "every morning at 7:00",
+        "perk1": "Our own roastery", "perk2": "Plant milks for free", "perk3": "Free delivery from 300 Kč", "perk4": "Baked every morning",
+        "menu.eyebrow": "Menu", "menu.title": "What will you have?", "menu.sub": "Add to cart and order in a minute.",
+        "cat.coffee": "Coffee", "cat.cold": "Iced", "cat.sweet": "Desserts", "cat.beans": "Beans to go", "new": "New",
+        "how.eyebrow": "How it works", "how.title": "Coffee in two clicks",
+        "h1.t": "Choose", "h1.p": "Add your favourite drinks and desserts to the cart.",
+        "h2.t": "Order", "h2.p": "Pick delivery or pickup and send your order.",
+        "h3.t": "Enjoy", "h3.p": "In 15 minutes your coffee is ready — or already at your door.",
+        "visit.eyebrow": "Contact", "visit.title": "Come and see us", "visit.hours": "Opening hours",
+        "d1": "Mon – Fri", "d2": "Saturday", "d3": "Sunday",
+        "foot.demo": "— demo project · photos: Unsplash", "foot.made": "Website: Jazzhe",
+        "cart.title": "Your cart", "cart.empty": "Your cart is empty for now", "cart.order": "Place order", "cart.demo": "Demo — the order is not sent anywhere.",
+        "mode.delivery": "🛵 Delivery", "mode.pickup": "🏃 Pickup",
+        "ph.name": "Name", "ph.phone": "Phone", "ph.addr": "Delivery address",
+        "sum.items": "Items", "sum.delivery": "Delivery", "sum.total": "Total", "free": "free",
+        "added": "added to cart", "fill": "Please fill in your name, phone and address",
+        "done.t": "Thank you!", "done.p": "Order received. We'll call you shortly to confirm.", "done.btn": "Back to menu"
+      }
+    };
+
+    let lang = 'cs';
+    try { lang = localStorage.getItem('zrnko-lang') || ((navigator.language || '').startsWith('cs') ? 'cs' : 'en'); } catch (e) {}
+    const t = k => T[lang][k] || k;
+    const kc = n => n + ' Kč';
+
+    function applyLang() {
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-i18n]').forEach(el => { const v = T[lang][el.dataset.i18n]; if (v) el.innerHTML = v; });
+      document.querySelectorAll('[data-i18n-ph]').forEach(el => el.placeholder = t(el.dataset.i18nPh));
+      document.querySelectorAll('.lang-sw button').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+      renderMenu(); renderCart();
+    }
+    document.querySelectorAll('.lang-sw button').forEach(b => b.addEventListener('click', () => {
+      lang = b.dataset.lang;
+      try { localStorage.setItem('zrnko-lang', lang); } catch (e) {}
+      applyLang();
+    }));
+
+    // ===== Меню з вкладками =====
+    let currentCat = 'coffee';
+    const grid = document.getElementById('menuGrid');
+    function renderMenu() {
+      grid.innerHTML = MENU.filter(i => i.cat === currentCat).map((i, n) => `
+        <div class="item" style="animation-delay:${n * 60}ms">
+          <div class="item-pic" style="background:${i.bg}">${i.emoji}<img src="${i.img}" alt="${i.name[lang]}" loading="lazy" onerror="this.remove()"></div>
+          ${i.isNew ? `<span><span class="badge-new">${t('new')}</span></span>` : ''}
+          <h3>${i.name[lang]}</h3>
+          <p>${i.desc[lang]}</p>
+          <div class="item-foot">
+            <span class="item-price">${kc(i.price)}</span>
+            <button class="add" data-id="${i.id}" aria-label="Add">+</button>
+          </div>
+        </div>`).join('');
+    }
+    document.getElementById('tabs').addEventListener('click', e => {
+      const b = e.target.closest('.tab'); if (!b) return;
+      currentCat = b.dataset.cat;
+      document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x === b));
+      renderMenu();
+    });
+    grid.addEventListener('click', e => {
+      const b = e.target.closest('.add'); if (!b) return;
+      addToCart(b.dataset.id);
+    });
+
+    // ===== Кошик =====
+    const cart = {}; // id -> кількість
+    let mode = 'delivery', ordered = false;
+    const countEl = document.getElementById('cartCount');
+
+    function addToCart(id) {
+      cart[id] = (cart[id] || 0) + 1;
+      const item = MENU.find(i => i.id === id);
+      toast(`${item.emoji} ${item.name[lang]} — ${t('added')}`);
+      countEl.classList.add('bump'); setTimeout(() => countEl.classList.remove('bump'), 200);
+      renderCart();
+    }
+    function totals() {
+      const items = Object.entries(cart).reduce((s, [id, q]) => s + MENU.find(i => i.id === id).price * q, 0);
+      const delivery = mode === 'delivery' && items > 0 && items < FREE_FROM ? DELIVERY_FEE : 0;
+      return { items, delivery, total: items + delivery };
+    }
+    function renderCart() {
+      const body = document.getElementById('cartBody'), foot = document.getElementById('cartFoot');
+      const ids = Object.keys(cart);
+      countEl.textContent = Object.values(cart).reduce((a, b) => a + b, 0);
+
+      if (ordered) {
+        foot.hidden = true;
+        body.innerHTML = `<div class="done"><div>🎉</div><h3>${t('done.t')}</h3><p>${t('done.p')}</p><button class="btn btn-dark" id="backMenu">${t('done.btn')}</button></div>`;
+        document.getElementById('backMenu').onclick = () => { ordered = false; closeCart(); renderCart(); location.hash = 'menu'; };
+        return;
+      }
+      if (!ids.length) {
+        foot.hidden = true;
+        body.innerHTML = `<div class="empty"><div>☕</div>${t('cart.empty')}</div>`;
+        return;
+      }
+      foot.hidden = false;
+      body.innerHTML = ids.map(id => {
+        const i = MENU.find(x => x.id === id);
+        return `<div class="line-item">
+          <div class="line-pic" style="background:${i.bg}">${i.emoji}<img src="${i.img}" alt="" onerror="this.remove()"></div>
+          <div class="line-info"><b>${i.name[lang]}</b><span>${kc(i.price)}</span></div>
+          <div class="qty"><button data-q="-1" data-id="${id}">−</button><b>${cart[id]}</b><button data-q="1" data-id="${id}">+</button></div>
+        </div>`;
+      }).join('');
+      const s = totals();
+      document.getElementById('sItems').textContent = kc(s.items);
+      document.getElementById('sDelivery').textContent = s.delivery ? kc(s.delivery) : t('free');
+      document.getElementById('rowDelivery').hidden = mode !== 'delivery';
+      document.getElementById('sTotal').textContent = kc(s.total);
+      document.getElementById('fAddr').hidden = mode !== 'delivery';
+    }
+    document.getElementById('cartBody').addEventListener('click', e => {
+      const b = e.target.closest('[data-q]'); if (!b) return;
+      const id = b.dataset.id;
+      cart[id] += +b.dataset.q;
+      if (cart[id] <= 0) delete cart[id];
+      renderCart();
+    });
+    document.getElementById('mode').addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b) return;
+      mode = b.dataset.mode;
+      document.querySelectorAll('#mode button').forEach(x => x.classList.toggle('active', x === b));
+      renderCart();
+    });
+    document.getElementById('orderBtn').addEventListener('click', () => {
+      const name = document.getElementById('fName').value.trim();
+      const phone = document.getElementById('fPhone').value.trim();
+      const addr = document.getElementById('fAddr').value.trim();
+      if (!name || !phone || (mode === 'delivery' && !addr)) { toast(t('fill')); return; }
+      Object.keys(cart).forEach(k => delete cart[k]);
+      ordered = true; renderCart();
+    });
+
+    const drawer = document.getElementById('drawer'), overlay = document.getElementById('overlay');
+    function openCart() { drawer.classList.add('open'); overlay.classList.add('open'); }
+    function closeCart() { drawer.classList.remove('open'); overlay.classList.remove('open'); }
+    document.getElementById('cartBtn').onclick = openCart;
+    document.getElementById('closeCart').onclick = closeCart;
+    overlay.onclick = closeCart;
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
+
+    let toastTimer;
+    function toast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg; el.classList.add('show');
+      clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 1800);
+    }
+
+    applyLang();
+
+    // ===== Зернятка кави на головному екрані =====
+    const beanSVG = '<svg viewBox="0 0 40 56"><ellipse cx="20" cy="28" rx="17" ry="26" fill="#6b4429"/><path d="M14 6c12 12 0 30 12 44" stroke="#3b2416" stroke-width="3" fill="none" stroke-linecap="round"/></svg>';
+    const beansBox = document.getElementById('beans');
+    const BEANS = [ // x%, y%, розмір, поворот
+      [4, 70, 26, -20], [12, 12, 18, 30], [44, 8, 22, 60], [52, 88, 30, -40],
+      [60, 30, 16, 10], [94, 18, 24, -60], [88, 82, 20, 45], [30, 92, 16, 80]
+    ];
+    BEANS.forEach(([x, y, s, r], i) => {
+      const b = document.createElement('div');
+      b.className = 'bean';
+      b.style.cssText = `left:${x}%;top:${y}%;--s:${s}px;--r:${r}deg;--d:${6 + i % 4}s;--delay:${-i * .7}s`;
+      b.dataset.depth = (s / 30).toFixed(2);
+      b.innerHTML = beanSVG;
+      beansBox.appendChild(b);
+    });
+    // Легкий паралакс за мишкою (тільки на комп'ютері)
+    if (matchMedia('(pointer:fine)').matches) {
+      document.querySelector('.hero').addEventListener('mousemove', e => {
+        const dx = e.clientX / innerWidth - .5, dy = e.clientY / innerHeight - .5;
+        beansBox.querySelectorAll('.bean').forEach(b => {
+          const k = b.dataset.depth * 30;
+          b.firstElementChild.style.transform = `translate(${dx * k}px, ${dy * k}px)`;
+        });
+      });
+    }
+
+    // ===== Поява блоків при скролі =====
+    document.querySelectorAll('.menu-head, .how-card, .visit-card, .map, #visit .title, #how .title').forEach(el => el.classList.add('reveal'));
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    }), { threshold: .15 });
+    document.querySelectorAll('.reveal').forEach((el, i) => { el.style.transitionDelay = (i % 3) * 90 + 'ms'; io.observe(el); });
+  </script>
+</body>
+</html>
