@@ -16,7 +16,7 @@
       bizF: ["Усе з Візитки", "До 5 сторінок", "Галерея і відгуки каруселлю", "Форма заявки", "Повний прайс + FAQ, повне SEO", "30 днів підтримки"],
       addons: "Доповнення", addonsBiz: "Доповнення · перші 6 уже в тарифі", incl: "входить", extra: "Обсяг і терміни",
       pages: "Додаткові сторінки", pagesN: "800 Kč за сторінку", langs: "Додаткові мови", langsN: "700 Kč, далі по 500", urgent: "Терміново", urgentN: "+25% без домену", domain: "Домен",
-      less: "менше", more: "більше", total: "Разом", prepay: "Передоплата 50% —", tip: "Тариф Бізнес з цими доповненнями дешевший на", tipSame: "Тариф Бізнес з цими доповненнями коштує стільки ж — і в ньому більше.", pick: "Обрати Бізнес",
+      less: "менше", more: "більше", total: "Разом", prepay: "Передоплата 50% —", tip: "Тариф Бізнес з цими доповненнями дешевший на", tipSame: "Тариф Бізнес з цими доповненнями коштує стільки ж — і в ньому більше.", pick: "Обрати Бізнес", orWrite: "Або напишіть напряму:", wa: "Привіт! Хочу замовити тариф «{tariff}»{addons}. За калькулятором — {total}.",
       name: "Ваше ім'я", contact: "Телефон, email або Telegram", message: "Коментар (необов'язково)", send: "Надіслати заявку", sending: "Надсилаю…",
       ok: "Дякую! Заявку отримано — відповім протягом дня.", err: "Не вдалося надіслати. Напишіть мені в WhatsApp: ", need: "Вкажіть ім'я та контакт.", wait: "Заявку вже надіслано, зачекайте хвилинку.",
       a: { gallery: "Галерея", carousel: "Відгуки каруселлю", form: "Форма заявки", price: "Прайс понад 6 послуг", faq: "FAQ", seo: "Повне SEO", beforeafter: "Слайдер до/після", calc: "Калькулятор ціни", anim: "Анімації", texts: "Тексти", photos: "Підбір фото" } },
@@ -26,7 +26,7 @@
       bizF: ["Vše z Vizitky", "Až 5 stránek", "Galerie a recenze v karuselu", "Poptávkový formulář", "Kompletní ceník + FAQ, kompletní SEO", "30 dní podpory"],
       addons: "Doplňky", addonsBiz: "Doplňky · prvních 6 je v ceně", incl: "v ceně", extra: "Rozsah a termín",
       pages: "Další stránky", pagesN: "800 Kč za stránku", langs: "Další jazyky", langsN: "700 Kč, pak po 500", urgent: "Expresně", urgentN: "+25 % bez domény", domain: "Doména",
-      less: "méně", more: "více", total: "Celkem", prepay: "Záloha 50 % —", tip: "Balíček Business s těmito doplňky vyjde levněji o", tipSame: "Balíček Business s těmito doplňky stojí stejně – a obsahuje víc.", pick: "Vybrat Business",
+      less: "méně", more: "více", total: "Celkem", prepay: "Záloha 50 % —", tip: "Balíček Business s těmito doplňky vyjde levněji o", tipSame: "Balíček Business s těmito doplňky stojí stejně – a obsahuje víc.", pick: "Vybrat Business", orWrite: "Nebo napište přímo:", wa: "Dobrý den! Mám zájem o balíček „{tariff}“{addons}. Podle kalkulačky — {total}.",
       name: "Vaše jméno", contact: "Telefon, e-mail nebo Telegram", message: "Poznámka (nepovinné)", send: "Odeslat poptávku", sending: "Odesílám…",
       ok: "Děkuji! Poptávka dorazila – ozvu se do druhého dne.", err: "Odeslání se nepovedlo. Napište mi na WhatsApp: ", need: "Vyplňte jméno a kontakt.", wait: "Poptávka už byla odeslána, chvilku počkejte.",
       a: { gallery: "Galerie", carousel: "Recenze v karuselu", form: "Poptávkový formulář", price: "Ceník nad 6 služeb", faq: "FAQ", seo: "Kompletní SEO", beforeafter: "Slider před/po", calc: "Cenová kalkulačka", anim: "Animace", texts: "Texty", photos: "Výběr fotek" } },
@@ -36,7 +36,7 @@
       bizF: ["Everything in Business Card", "Up to 5 pages", "Gallery and reviews carousel", "Contact form", "Full price list + FAQ, full SEO", "30 days support"],
       addons: "Add-ons", addonsBiz: "Add-ons · first 6 are included", incl: "included", extra: "Scope and timing",
       pages: "Extra pages", pagesN: "800 Kč per page", langs: "Extra languages", langsN: "700 Kč, then 500 each", urgent: "Urgent", urgentN: "+25% excl. domain", domain: "Domain",
-      less: "fewer", more: "more", total: "Total", prepay: "50% deposit —", tip: "The Business package with these add-ons is cheaper by", tipSame: "The Business package with these add-ons costs the same — and includes more.", pick: "Choose Business",
+      less: "fewer", more: "more", total: "Total", prepay: "50% deposit —", tip: "The Business package with these add-ons is cheaper by", tipSame: "The Business package with these add-ons costs the same — and includes more.", pick: "Choose Business", orWrite: "Or message me directly:", wa: "Hi! I'd like to order the «{tariff}» package{addons}. Calculator total — {total}.",
       name: "Your name", contact: "Phone, email or Telegram", message: "Comment (optional)", send: "Send request", sending: "Sending…",
       ok: "Thank you! Request received — I'll reply within a day.", err: "Couldn't send it. Message me on WhatsApp: ", need: "Please enter your name and contact.", wait: "Request already sent, please wait a minute.",
       a: { gallery: "Gallery", carousel: "Reviews carousel", form: "Contact form", price: "Price list over 6 services", faq: "FAQ", seo: "Full SEO", beforeafter: "Before/after slider", calc: "Price calculator", anim: "Animations", texts: "Copywriting", photos: "Photo selection" } },
@@ -46,7 +46,7 @@
       bizF: ["Всё из Визитки", "До 5 страниц", "Галерея и отзывы каруселью", "Форма заявки", "Полный прайс + FAQ, полное SEO", "30 дней поддержки"],
       addons: "Дополнения", addonsBiz: "Дополнения · первые 6 уже в тарифе", incl: "входит", extra: "Объём и сроки",
       pages: "Доп. страницы", pagesN: "800 Kč за страницу", langs: "Доп. языки", langsN: "700 Kč, далее по 500", urgent: "Срочно", urgentN: "+25% без домена", domain: "Домен",
-      less: "меньше", more: "больше", total: "Итого", prepay: "Предоплата 50% —", tip: "Тариф Бизнес с этими дополнениями дешевле на", tipSame: "Тариф Бизнес с этими дополнениями стоит столько же — и в нём больше.", pick: "Выбрать Бизнес",
+      less: "меньше", more: "больше", total: "Итого", prepay: "Предоплата 50% —", tip: "Тариф Бизнес с этими дополнениями дешевле на", tipSame: "Тариф Бизнес с этими дополнениями стоит столько же — и в нём больше.", pick: "Выбрать Бизнес", orWrite: "Или напишите напрямую:", wa: "Привет! Хочу заказать тариф «{tariff}»{addons}. По калькулятору — {total}.",
       name: "Ваше имя", contact: "Телефон, email или Telegram", message: "Комментарий (необязательно)", send: "Отправить заявку", sending: "Отправляю…",
       ok: "Спасибо! Заявка получена — отвечу в течение дня.", err: "Не удалось отправить. Напишите мне в WhatsApp: ", need: "Укажите имя и контакт.", wait: "Заявка уже отправлена, подождите минутку.",
       a: { gallery: "Галерея", carousel: "Отзывы каруселью", form: "Форма заявки", price: "Прайс более 6 услуг", faq: "FAQ", seo: "Полное SEO", beforeafter: "Слайдер до/после", calc: "Калькулятор цены", anim: "Анимации", texts: "Тексты", photos: "Подбор фото" } },
@@ -106,6 +106,9 @@
     const tip = root.querySelector(".jz-tip");
     const diff = state.tariff === "card" ? r.total - price({ ...state, tariff: "biz" }).total : -1;
     tip.hidden = diff < 0;
+    const names = state.addons.map((id) => t.a[id]).filter(Boolean);
+    const wa = t.wa.replace("{tariff}", t[state.tariff]).replace("{addons}", names.length ? " + " + names.join(", ") : "").replace("{total}", kc(r.total));
+    root.querySelector(".jz-wa").href = "https://wa.me/420778583552?text=" + encodeURIComponent(wa);
     if (diff >= 0) tip.innerHTML = `${diff > 0 ? `${t.tip} <strong>${kc(diff)}</strong>.` : t.tipSame}<button type="button" data-biz>${t.pick}</button>`;
   }
 
@@ -153,7 +156,33 @@
     }
   });
 
+  // Відкриття/закриття вікна: кнопки з data-calc="card|biz" (тарифи, «Безкоштовний розрахунок»), посилання #calc
+  let opener = null;
+  function openCalc(tariff) {
+    if (TARIFFS[tariff] && state.tariff !== tariff) { state.tariff = tariff; render(); }
+    root.hidden = false;
+    document.body.classList.add("jz-lock");
+    root.querySelector(".jz-sheet").scrollTop = 0;
+    root.querySelector(".jz-x").focus();
+  }
+  function closeCalc() {
+    root.hidden = true;
+    document.body.classList.remove("jz-lock");
+    if (location.hash === "#calc") history.replaceState(null, "", location.pathname + location.search);
+    opener?.focus();
+  }
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-calc], a[href='#calc']");
+    if (!b) return;
+    e.preventDefault();
+    opener = b;
+    openCalc(b.dataset.calc);
+  });
+  root.addEventListener("click", (e) => { if (e.target === root || e.target.closest("[data-jz-close]")) closeCalc(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !root.hidden) closeCalc(); });
+
   // Сайт перемикає мову через <html lang> — підхоплюємо це
   new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
   render();
+  if (location.hash === "#calc") openCalc(); // пряме посилання jazzhe-web.store/#calc відкриває калькулятор
 })();

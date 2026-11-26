@@ -35,7 +35,7 @@ This repository is the site itself: **no frameworks, no build step**, just hand-
 | | |
 |---|---|
 | 🌍 **4 languages** | Ukrainian, Czech, English and Russian — switched instantly, choice is remembered |
-| 🧮 **Price calculator** | Pick a package and add-ons, see the price live, send a request in one click |
+| 🧮 **Price calculator** | Opens from any package's *Order* button: tick add-ons, see the price live, send a request in one click |
 | 📨 **Requests go straight to my CRM** | Submissions land in Supabase and show up in my private *My Work Space* app |
 | 🖼️ **Real case studies** | Live client projects plus interactive demo sites with before/after sliders |
 | 📱 **Great on phones** | Every section adapts to small screens; quick-contact button always at hand |
@@ -44,7 +44,7 @@ This repository is the site itself: **no frameworks, no build step**, just hand-
 
 ## Price calculator
 
-Clients choose a package (**Business Card** or **Business**), tick add-ons and immediately see the total and the 50% deposit. If the *Business* package works out cheaper than *Business Card* with the same add-ons, the calculator says so.
+Clicking **Order** on a package (or **Get a free quote**) opens the calculator in a window with that package already selected. Clients tick add-ons and immediately see the total and the 50% deposit, then send a request — or jump to WhatsApp with the calculation pre-filled. If the *Business* package works out cheaper than *Business Card* with the same add-ons, the calculator says so.
 
 <p align="center"><img src="docs/screenshot-calculator.png" alt="Price calculator" width="90%"></p>
 
@@ -79,7 +79,7 @@ flowchart LR
 ├── assets/
 │   ├── css/
 │   │   ├── style.css     # design system: colours, layout, sections
-│   │   └── calc.css      # price calculator
+│   │   └── calc.css      # price calculator window
 │   └── js/
 │       ├── main.js       # translations, language switcher, menus, sliders, animations
 │       └── calc.js       # price calculator + request sending

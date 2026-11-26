@@ -55,7 +55,7 @@
       <h1 class="reveal" data-i18n="hero.title">Websites that <span class="grad">bring you clients</span></h1>
       <p class="reveal" data-i18n="hero.text">I'm Jazzhe — a web developer from Ukraine based in Prague. I build fast, modern websites for trainers, barbers, cafés and small businesses.</p>
       <div class="hero-btns reveal">
-        <a href="#calc" class="btn btn-primary" data-i18n="hero.btn1">Get a free quote →</a>
+        <a href="#calc" class="btn btn-primary" data-calc="card" data-i18n="hero.btn1">Get a free quote →</a>
         <a href="#cases" class="btn btn-ghost" data-i18n="hero.btn2">See my work</a>
       </div>
       <div class="code-line reveal">&lt;<b>jazzhe</b> role="web developer" city="Prague" /&gt;</div>
@@ -227,14 +227,14 @@
           <p class="plan-for" data-i18n="p1.for"></p>
           <div class="plan-price"><span class="sale" data-i18n="plan.sale">Sale</span><s>2 990 Kč</s><b>2 000 Kč</b><small data-i18n="plan.domain">+ 300 Kč domain</small></div>
           <ul class="plan-list"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span data-i18n="p1.f1"></span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span data-i18n="p1.f2"></span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span data-i18n="p1.f3"></span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span data-i18n="p1.f4"></span></li></ul>
-          <button class="btn btn-ghost plan-btn" data-order="p1" data-i18n="plan.order">Order</button>
+          <button class="btn btn-ghost plan-btn" data-calc="card" data-i18n="plan.order">Order</button>
         </article>
         <article class="plan plan-hot" data-plan="p2">
           <span class="plan-badge" data-i18n="plan.popular">Popular</span><h3 data-i18n="p2.name"></h3>
           <p class="plan-for" data-i18n="p2.for"></p>
           <div class="plan-price"><span class="sale" data-i18n="plan.sale">Sale</span><s>4 800 Kč</s><b>4 000 Kč</b><small data-i18n="plan.domain">+ 300 Kč domain</small></div>
           <ul class="plan-list"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span data-i18n="p2.f1"></span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span data-i18n="p2.f2"></span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span data-i18n="p2.f3"></span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span data-i18n="p2.f4"></span></li></ul>
-          <button class="btn btn-primary plan-btn" data-order="p2" data-i18n="plan.order">Order</button>
+          <button class="btn btn-primary plan-btn" data-calc="biz" data-i18n="plan.order">Order</button>
         </article>
         <article class="plan" data-plan="p3">
           <h3 data-i18n="p3.name"></h3>
@@ -302,12 +302,12 @@
   </section>
 
   <!-- ===== КОНТАКТИ ===== -->
-  <!-- Калькулятор ціни + заявка → Supabase (My Work Space) -->
-  <section id="calc">
-  <div class="container">
-    <span class="tag reveal" data-jz="tag"></span>
-    <h2 class="section-title reveal" data-jz="title"></h2>
-    <p class="section-sub reveal" data-jz="sub"></p>
+  <!-- Калькулятор ціни + заявка → Supabase (My Work Space). Вікно відкривають кнопки з data-calc -->
+  <div id="calc" class="jz-modal" hidden role="dialog" aria-modal="true" aria-labelledby="jz-title">
+  <div class="jz-sheet">
+    <button type="button" class="jz-x" data-jz-close aria-label="Close">×</button>
+    <h2 class="jz-h" id="jz-title" data-jz="title"></h2>
+    <p class="jz-muted jz-sub" data-jz="sub"></p>
     <form class="jz-grid" novalidate>
       <div class="jz-main"></div>
       <a class="jz-bar" href="#jz-side"><span data-jz="total"></span><strong class="jz-total2"></strong></a>
@@ -322,10 +322,11 @@
         <input name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="jz-hp">
         <button class="jz-btn" data-jz="send"></button>
         <p class="jz-status" role="status"></p>
+        <p class="jz-alt"><span data-jz="orWrite"></span> <a class="jz-wa" href="https://wa.me/420778583552" target="_blank" rel="noopener">WhatsApp</a> · <a href="https://t.me/sasaimne" target="_blank" rel="noopener">Telegram</a></p>
       </aside>
     </form>
   </div>
-</section>
+  </div>
 <script src="assets/js/calc.js"></script>
 
   <section id="contact">
