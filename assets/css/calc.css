@@ -1,0 +1,51 @@
+/* секція, заголовок і відступи — зі стилів сайту (.container, .tag, .section-title, .section-sub) */
+.jz-muted{color:var(--muted,#aaa)}
+.jz-grid{display:grid;grid-template-columns:1fr 340px;gap:40px;align-items:start}
+.jz-sec{margin-bottom:32px}
+.jz-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted,#aaa);margin:0 0 12px;font-weight:600}
+.jz-seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border:1px solid var(--line,#383838);border-radius:18px}
+.jz-seg label{padding:14px 18px;border-radius:14px;cursor:pointer;display:flex;flex-direction:column;gap:2px;transition:background .15s}
+.jz-seg input{position:absolute;opacity:0;pointer-events:none}
+.jz-seg label:has(input:checked){background:var(--text,#e6e6e6);color:#111}
+.jz-seg label:has(input:checked) small{color:#555}
+.jz-seg label:has(input:focus-visible){outline:2px solid var(--text,#e6e6e6);outline-offset:2px}
+.jz-seg b{font-size:17px}
+.jz-seg span{font-weight:700;font-size:15px}
+.jz-seg small{color:var(--muted,#aaa);font-size:13px}
+.jz-inc{margin-top:12px;font-size:13px;color:var(--muted,#aaa)}
+.jz-inc summary{cursor:pointer;width:max-content}
+.jz-inc ul{columns:2;margin:10px 0 0;padding-left:18px;line-height:1.8}
+.jz-rows{display:grid;grid-template-columns:1fr 1fr;column-gap:32px}
+.jz-row{display:flex;align-items:center;gap:12px;min-height:52px;border-bottom:1px solid var(--line,#383838);cursor:pointer;font-size:15px}
+.jz-row .p{margin-left:auto;color:var(--muted,#aaa);font-size:14px;white-space:nowrap}
+.jz-row.incl{cursor:default;color:var(--muted,#aaa)}
+.jz-row span small{display:block;color:var(--muted,#aaa);font-size:12px}
+.jz-check{appearance:none;width:20px;height:20px;margin:0;border:1.5px solid #555;border-radius:6px;flex:none;display:grid;place-content:center;cursor:pointer}
+.jz-check:checked{background:var(--text,#e6e6e6);border-color:var(--text,#e6e6e6)}
+.jz-check:checked::after{content:"";width:9px;height:5px;border:2px solid #111;border-top:0;border-right:0;transform:translateY(-1px) rotate(-45deg)}
+.jz-check:disabled{opacity:.45;cursor:default}
+.jz-check:focus-visible,.jz-step button:focus-visible{outline:2px solid var(--text,#e6e6e6);outline-offset:2px}
+.jz-step{margin-left:auto;display:flex;align-items:center;gap:6px}
+.jz-step button{width:32px;height:32px;border-radius:999px;border:1px solid var(--line,#383838);background:transparent;color:var(--text,#e6e6e6);cursor:pointer;font-size:16px;line-height:1}
+.jz-step output{min-width:22px;text-align:center;font-variant-numeric:tabular-nums}
+.jz-side{position:sticky;top:90px;padding:24px;border:1px solid var(--line,#383838);border-radius:var(--radius,18px);background:var(--card,#161616);display:flex;flex-direction:column;gap:16px}
+.jz-side .jz-muted{display:block;font-size:13px}
+.jz-total{display:block;font-size:40px;font-weight:800;line-height:1.05;margin:4px 0}
+.jz-tip{margin:0;font-size:13px;line-height:1.5;padding-left:12px;border-left:2px solid var(--text,#e6e6e6)}
+.jz-tip button{display:block;margin-top:8px;font:inherit;font-size:13px;color:inherit;background:none;border:1px solid var(--line,#383838);border-radius:999px;padding:6px 12px;cursor:pointer}
+.jz-lines{font-size:13px;color:var(--muted,#aaa);display:flex;flex-direction:column;gap:6px;padding:16px 0;border-top:1px solid var(--line,#383838);border-bottom:1px solid var(--line,#383838)}
+.jz-lines div{display:flex;justify-content:space-between;gap:8px}
+.jz-side label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted,#aaa)}
+#calc input:not([type]),#calc textarea{font:inherit;color:var(--text,#e6e6e6);background:transparent;border:1px solid var(--line,#383838);border-radius:12px;padding:10px 12px;outline:none}
+#calc input:not([type]):focus,#calc textarea:focus{border-color:var(--muted,#aaa)}
+.jz-bar{display:none}
+.jz-hp{position:absolute;left:-9999px;width:1px;height:1px}
+.jz-btn{font:inherit;font-weight:600;border:0;border-radius:999px;padding:14px 22px;background:var(--text,#e6e6e6);color:#111;cursor:pointer}
+.jz-btn:disabled{opacity:.5;cursor:wait}
+.jz-status{margin:0;font-size:14px}.jz-status.err{color:#fca5a5}
+@media(max-width:860px){.jz-grid,.jz-rows{grid-template-columns:1fr}.jz-side{position:static}.jz-inc ul{columns:1}
+  .jz-bar{display:flex;justify-content:space-between;align-items:center;position:sticky;bottom:12px;z-index:5;padding:14px 20px;border-radius:999px;background:var(--text,#e6e6e6);color:#111;text-decoration:none;font-weight:600;box-shadow:0 10px 30px #0008}
+  .jz-bar strong{font-size:18px}}
+
+/* внутрішні блоки калькулятора — не секції сайту, тож без їхніх відступів */
+#calc .jz-sec { padding: 0; }
